@@ -1,5 +1,7 @@
 package cn.xudam.blog.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,16 +57,16 @@ public class Blog {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
-    }
-
     public Type getType() {
         return type;
     }
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     @Override
@@ -83,6 +85,9 @@ public class Blog {
                 ", recommend=" + recommend +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
+                ", comments=" + comments +
+                ", type=" + type +
+                ", tags=" + tags +
                 '}';
     }
 

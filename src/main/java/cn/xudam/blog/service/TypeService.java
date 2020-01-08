@@ -3,6 +3,8 @@ package cn.xudam.blog.service;
 import cn.xudam.blog.pojo.Type;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * @author 鸣
  * 2020/1/5 21:52
@@ -14,6 +16,8 @@ public interface TypeService {
     Type getTypeById(Integer id);
 
     PageInfo<Type> listType(Integer id);
+
+    List<Type> listType();
 
     PageInfo<Type> listType(Integer id, Boolean isDesc);
 

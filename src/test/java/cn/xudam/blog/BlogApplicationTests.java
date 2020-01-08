@@ -1,21 +1,21 @@
 package cn.xudam.blog;
 
+import cn.xudam.blog.dao.BlogMapper;
 import cn.xudam.blog.dao.TypeMapper;
-import cn.xudam.blog.dao.UserMapper;
-import cn.xudam.blog.pojo.Tag;
+import cn.xudam.blog.dto.cond.BlogCond;
+import cn.xudam.blog.pojo.Blog;
 import cn.xudam.blog.pojo.Type;
-import cn.xudam.blog.pojo.User;
+import cn.xudam.blog.service.BlogService;
 import cn.xudam.blog.service.TagService;
+import cn.xudam.blog.service.TypeService;
 import cn.xudam.blog.service.UserService;
-import com.github.pagehelper.ISelect;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Collection;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @SpringBootTest
@@ -28,65 +28,80 @@ class BlogApplicationTests {
     TypeMapper typeMapper;
 
     @Autowired
+    TypeService typeService;
+
+    @Autowired
     TagService tagService;
+
+    @Autowired
+    BlogService blogService;
+
+    @Autowired
+    BlogMapper blogMapper;
 
     @Test
     void contextLoads() {
-        User user = userService.checkUser("admin", "123456");
-        System.out.println(user);
+        Type type = typeMapper.getTypeById(6);
+        Blog blog = new Blog();
+        blog.setTitle("测试");
+        blog.setContent("dwa");
+        blog.setFirstPic("dw");
+        blog.setFlag("aa");
+        blog.setViews(1);
+        blog.setAppreciation(true);
+        blog.setCopyright(true);
+        blog.setCommentAble(true);
+        blog.setPublish(true);
+        blog.setRecommend(true);
+        blog.setUpdateTime(LocalDateTime.now());
+        blog.setCreateTime(LocalDateTime.now());
+        blog.setType(type);
+        blogMapper.saveBlog(blog);
     }
 
     @Test
-    void daoTest1() {
+    void contextLoads1() {
+        Blog blog = blogMapper.getBlogById(7);
+        System.out.println(blog);
+    }
+
+    @Test
+    void contextLoads2() {
+        Blog blog = new Blog();
+        LocalDateTime now = LocalDateTime.now();
+        String format = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.out.println(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        LocalDateTime parse = LocalDateTime.parse(format, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.out.println(parse);
+        blog.setCreateTime(parse);
+        System.out.println(blog);
+    }
+
+    @Test
+    void contextLoads3() {
         Type type = new Type();
-        type.setName("SpringBoot");
-        Integer java = typeMapper.saveType(type);
-        System.out.println(java);
+        type.setName("dwa");
+        typeMapper.saveType(type);
     }
 
     @Test
-    void daoTest2() {
-        Collection<Type> types = typeMapper.listType();
-        System.out.println(types);
-    }
-
-    @Test
-    void daoTest3() {
-        Integer integer = typeMapper.deleteType(1);
-        System.out.println(integer);
-    }
-
-    @Test
-    void daoTest4() {
-        PageInfo<Type> pageInfo = PageHelper.startPage(1, 4, "id desc").doSelectPageInfo(new ISelect() {
-            @Override
-            public void doSelect() {
-                typeMapper.listType();
-            }
-        });
+    void contextLoads4() {
+        PageInfo<Blog> pageInfo = blogService.listBlog(1);
         System.out.println(pageInfo);
-        for (Type type : pageInfo.getList()) {
-            System.out.println(type);
+        List<Blog> list = pageInfo.getList();
+        for (Blog blog : list) {
+            System.out.println(blog);
         }
     }
 
     @Test
-    void daoTest5() {
-        PageInfo<Type> pageInfo = PageHelper.startPage(1, 4, "id desc").doSelectPageInfo(() -> typeMapper.listType());
+    void contextLoads5() {
+        BlogCond blogCond = new BlogCond();
+        blogCond.setTypeId(6);
+        PageInfo<Blog> pageInfo = blogService.listBlogByCond(blogCond);
         System.out.println(pageInfo);
-        for (Type type : pageInfo.getList()) {
-            System.out.println(type);
-        }
-    }
-
-    @Test
-    void daoTest6() {
-        Tag tag = new Tag();
-        tag.setName("技术");
-        tagService.saveTag(tag);
-        PageInfo<Tag> pageInfo = tagService.listTag(1);
-        for (Tag tag1 : pageInfo.getList()) {
-            System.out.println(tag1);
+        for (Blog blog : pageInfo.getList()) {
+            System.out.println(blog);
         }
     }
 

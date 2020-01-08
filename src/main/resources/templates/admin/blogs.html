@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/admin/common-admin::header(title='博客管理')"></head>
 <body>
-<div th:replace="/admin/common-admin::nav-admin(active='blog')"></div>
+<div id="box">
+  <div th:replace="/admin/common-admin::nav-admin(active='blog')"></div>
   <div class="ui attached pointing menu">
     <div class="ui container">
       <div class="right menu">
@@ -14,19 +15,19 @@
   <!--中间内容-->
   <div  class="m-container-small m-padded-tb-big">
     <div class="ui container">
-      <form action="#" method="post" class="ui segment form">
+      <div class="ui segment form">
         <div class="inline fields">
           <div class="field">
             <input type="text" name="title" placeholder="标题">
+            <input type="hidden" name="page">
           </div>
           <div class="field">
             <div class="ui selection dropdown">
-              <input type="hidden" name="type">
+              <input type="hidden" name="typeId">
               <i class="dropdown icon"></i>
               <div class="default text">分类</div>
               <div class="menu">
-                <div class="item" data-value="1">错误日志</div>
-                <div class="item" data-value="2">开发者手册</div>
+                <div class="item" th:each="type : ${types}" th:text="${type.getName()}" th:data-value="${type.getId()}">错误日志</div>
               </div>
             </div>
           </div>
@@ -37,12 +38,13 @@
             </div>
           </div>
           <div class="field">
-            <button class="ui mini teal basic button"><i class="search icon"></i>搜索</button>
+            <button id="search-btn" class="ui mini teal basic button"><i class="search icon"></i>搜索</button>
           </div>
         </div>
-      </form>
-      <table class="ui padded teal large table">
-        <thead>
+      </div>
+      <div id="table-container">
+        <table th:fragment="blogList" class="ui padded teal large table">
+          <thead>
           <tr>
             <th></th>
             <th>标题</th>
@@ -51,36 +53,39 @@
             <th>更新时间</th>
             <th>操作</th>
           </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td>刻意练习清单</td>
-            <td>认知升级</td>
-            <td>是</td>
-            <td>2017-10-02 09:45</td>
+          </thead>
+          <tbody>
+          <!--/*@thymesVar id="blog" type="cn.xudam.blog.pojo.Blog"*/-->
+          <tr th:each="blog : ${pageInfo.getList()}">
+            <td th:text="${blog.getId()}">1</td>
+            <td th:text="${blog.getTitle()}">刻意练习清单</td>
+            <td th:text="${blog.getType().getName()}">认知升级</td>
+            <td th:text="${blog.getRecommend()} ? '是' : '否'">是</td>
+            <td th:text="${#strings.replace(blog.getUpdateTime(),'T',' ')}">2017-10-02 09:45</td>
             <td>
-              <a href="#" class="ui mini teal basic button">编辑</a>
-              <a href="#" class="ui mini red basic button">删除</a>
+              <a href="#" th:href="@{'/admin/blogs/update/'+${blog.getId()}}" class="ui large teal basic button">编辑</a>
+              <a href="#" th:href="@{'/admin/blogs/delete/'+${blog.getId()}}" class="ui large red basic button">删除</a>
             </td>
           </tr>
-        </tbody>
-        <tfoot>
+          </tbody>
+          <tfoot>
           <tr>
             <th colspan="6">
               <div class="ui mini pagination menu">
-                <a class=" item">上一页</a>
-                <a class=" item">下一页</a>
+                <a onclick="page(this)" th:attr="data-page=${pageInfo.getPrePage()}" th:if="${pageInfo.getPrePage()>0}" class="item" >上一页</a>
+                <a onclick="page(this)" th:attr="data-page=${pageInfo.getNextPage()}" th:if="${pageInfo.getNextPage()!=0}" class="item">下一页</a>
               </div>
               <a href="#" class="ui mini right floated teal basic button">新增</a>
             </th>
           </tr>
-        </tfoot>
-      </table>
+          </tfoot>
+        </table>
+      </div>
     </div>
   </div>
   <!--底部footer-->
-<div th:replace="/admin/common-admin::footer-admin"></div>
+  <div th:replace="/admin/common-admin::footer-admin"></div>
+</div>
   <script>
     $('.menu.toggle').click(function () {
       $('.m-item').toggleClass('m-mobile-hide');
@@ -90,6 +95,24 @@
       on : 'hover'
     });
 
+    function page(obj) {
+      $("[name='page']").val($(obj).data("page"));
+      loadData();
+    }
+
+    $("#search-btn").click(function () {
+      loadData();
+    });
+
+    function loadData() {
+      console.log("loadData")
+      $("#table-container").load(/*[[@{/admin/blogs/search}]]*/"/admin/blogs/search", {
+        title : $("[name='title']").val(),
+        typeId : $("[name='typeId']").val(),
+        recommend : $("[name='recommend']").prop('checked'),
+        page : $("[name='page']").val()
+      });
+    }
   </script>
 </body>
 </html>

@@ -1,12 +1,15 @@
-package cn.xudam.blog.service;
+package cn.xudam.blog.service.impl;
 
 import cn.xudam.blog.dao.TypeMapper;
 import cn.xudam.blog.exception.NotFoundException;
 import cn.xudam.blog.pojo.Type;
+import cn.xudam.blog.service.TypeService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author 鸣
@@ -36,13 +39,18 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public PageInfo<Type> listType(Integer id) {
-        return listType(id, true);
+    public List<Type> listType() {
+        return typeMapper.listType();
     }
 
     @Override
-    public PageInfo<Type> listType(Integer id, Boolean isDesc) {
-        PageInfo<Type> pageInfo = PageHelper.startPage(id, 5, "id" + (isDesc?" desc":"")).doSelectPageInfo(() -> typeMapper.listType());
+    public PageInfo<Type> listType(Integer pageNum) {
+        return listType(pageNum, true);
+    }
+
+    @Override
+    public PageInfo<Type> listType(Integer pageNum, Boolean isDesc) {
+        PageInfo<Type> pageInfo = PageHelper.startPage(pageNum, 5, "id" + (isDesc?" desc":"")).doSelectPageInfo(() -> listType());
         return pageInfo;
     }
 

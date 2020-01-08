@@ -38,8 +38,8 @@
         <tr>
           <th colspan="6" >
             <div class="ui big pagination menu">
-              <a th:if="${pageInfo.getPrePage()>0}" th:href="@{'/admin/tags/'+${pageInfo.getPrePage()}}" class="  item" >上一页</a>
-              <a th:if="${pageInfo.getNextPage()!=0}" th:href="@{'/admin/tags/'+${pageInfo.getNextPage()}}" class=" item">下一页</a>
+              <a th:if="${!pageInfo.isFirstPage}" th:href="@{'/admin/tags/'+${pageInfo.getPrePage()}}" class="  item" >上一页</a>
+              <a th:if="${!pageInfo.isLastPage}" th:href="@{'/admin/tags/'+${pageInfo.getNextPage()}}" class=" item">下一页</a>
             </div>
             <a href="#" th:href="@{/admin/tags/input}"  class="ui big right floated teal basic button">新增</a>
           </th>

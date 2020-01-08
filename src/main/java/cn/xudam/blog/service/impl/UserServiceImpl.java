@@ -1,7 +1,8 @@
-package cn.xudam.blog.service;
+package cn.xudam.blog.service.impl;
 
 import cn.xudam.blog.dao.UserMapper;
 import cn.xudam.blog.pojo.User;
+import cn.xudam.blog.service.UserService;
 import cn.xudam.blog.util.MD5Utils;
 import org.springframework.stereotype.Service;
 

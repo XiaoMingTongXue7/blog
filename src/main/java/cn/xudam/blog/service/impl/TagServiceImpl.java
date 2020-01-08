@@ -1,8 +1,9 @@
-package cn.xudam.blog.service;
+package cn.xudam.blog.service.impl;
 
 import cn.xudam.blog.dao.TagMapper;
 import cn.xudam.blog.exception.NotFoundException;
 import cn.xudam.blog.pojo.Tag;
+import cn.xudam.blog.service.TagService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -13,9 +13,9 @@ public interface TagService {
 
     Tag getTagById(Integer id);
 
-    PageInfo<Tag> listTag(Integer id);
+    PageInfo<Tag> listTag(Integer pageNum);
 
-    PageInfo<Tag> listTag(Integer id, Boolean isDesc);
+    PageInfo<Tag> listTag(Integer pageNum, Boolean isDesc);
 
     void updateTag(Tag Tag);
 
