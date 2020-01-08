@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xudam.blog.dao.BlogMapper">
+
+    <select id="getTypeById" parameterType="Integer" resultType="Type">
+        select Id, name from t_type
+        where Id=#{id}
+    </select>
+
+    <resultMap id="BlogMapper" type="Blog">
+        <id column="Id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="firstpic" property="firstPic"/>
+        <result column="views" property="views"/>
+        <result column="appreciation" property="appreciation"/>
+        <result column="copyright" property="copyright"/>
+        <result column="commentable" property="commentAble"/>
+        <result column="publish" property="publish"/>
+        <result column="recommend" property="recommend"/>
+        <result column="createtime" property="createTime"/>
+        <result column="updatetime" property="updateTime"/>
+        <association property="type" javaType="Type" select="getTypeById" column="type_id"/>
+    </resultMap>
+
+    <select id="getBlogById" parameterType="Integer" resultMap="BlogMapper">
+        select Id, title, content, firstpic, flag, views, appreciation, copyright,
+        commentable, publish, recommend, createtime, updatetime, type_id
+        from t_blog where id=#{id}
+    </select>
+
+    <select id="listBlogByCond" resultMap="BlogMapper" parameterType="cn.xudam.blog.dto.cond.BlogCond">
+        select id, title, content, firstpic, flag, views, appreciation,
+        copyright, commentable, publish, recommend, createtime, updatetime, type_id
+        from t_blog
+        <where>
+            <if test="title != null">
+                and title like concat('%',#{title, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="typeId != null">
+                and type_Id = #{typeId, jdbcType=INTEGER}
+            </if>
+            <if test="recommend != null">
+                and recommend = #{recommend, jdbcType=TINYINT}
+            </if>
+        </where>
+    </select>
+
+    <select id="listBlog" resultMap="BlogMapper">
+        select id, title, content, firstpic, flag, views, appreciation,
+        copyright, commentable, publish, recommend, createtime, updatetime, type_id
+        from t_blog
+    </select>
+
+    <insert id="saveBlog" parameterType="Blog">
+        insert into t_blog (title, content, firstPic, flag, views, appreciation, copyright, commentAble, publish, recommend, createTime, updateTime, type_id)
+        values (
+            #{title, jdbcType=VARCHAR},
+            #{content, jdbcType=VARCHAR},
+            #{firstPic, jdbcType=VARCHAR},
+            #{flag, jdbcType=VARCHAR},
+            #{views, jdbcType=INTEGER},
+            #{appreciation, jdbcType=TINYINT},
+            #{copyright, jdbcType=TINYINT},
+            #{commentAble, jdbcType=TINYINT},
+            #{publish, jdbcType=TINYINT},
+            #{recommend, jdbcType=TINYINT},
+            #{createTime, jdbcType=TIMESTAMP},
+            #{updateTime, jdbcType=TIMESTAMP},
+            #{type.id, jdbcType=INTEGER}
+        )
+    </insert>
+
+    <update id="updateBlog" parameterType="Blog">
+        update t_blog set title=#{title}, content=#{content}, firstPic=#{firstPic}, flag=#{flag},
+        views=#{views}, appreciation=#{appreciation}, copyright=#{copyright}, commentAble=#{commentAble},
+        publish=#{publish}, recommend=#{recommend}, createTime=#{createTime}, updateTime=#{updateTime}
+        where Id=#{id}
+    </update>
+
+    <delete id="deleteBlog" parameterType="Integer">
+        delete from t_blog where Id=#{id}
+    </delete>
+
+</mapper>
