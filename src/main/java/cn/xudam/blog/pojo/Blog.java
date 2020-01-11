@@ -17,6 +17,9 @@ public class Blog {
     private String title;
     //内容
     private String content;
+
+    private String description;
+
     //首图
     private String firstPic;
     //标记
@@ -69,12 +72,21 @@ public class Blog {
         this.tags = tags;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "Blog{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
+                ", description='" + description + '\'' +
                 ", firstPic='" + firstPic + '\'' +
                 ", flag='" + flag + '\'' +
                 ", views=" + views +

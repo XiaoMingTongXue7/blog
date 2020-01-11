@@ -13,6 +13,7 @@
         <id column="Id" property="id"/>
         <result column="title" property="title"/>
         <result column="content" property="content"/>
+        <result column="description" property="description"/>
         <result column="firstpic" property="firstPic"/>
         <result column="views" property="views"/>
         <result column="appreciation" property="appreciation"/>
@@ -26,13 +27,13 @@
     </resultMap>
 
     <select id="getBlogById" parameterType="Integer" resultMap="BlogMapper">
-        select Id, title, content, firstpic, flag, views, appreciation, copyright,
+        select Id, title, content, description, firstpic, flag, views, appreciation, copyright,
         commentable, publish, recommend, createtime, updatetime, type_id
         from t_blog where id=#{id}
     </select>
 
     <select id="listBlogByCond" resultMap="BlogMapper" parameterType="cn.xudam.blog.dto.cond.BlogCond">
-        select id, title, content, firstpic, flag, views, appreciation,
+        select id, title, content, description, firstpic, flag, views, appreciation,
         copyright, commentable, publish, recommend, createtime, updatetime, type_id
         from t_blog
         <where>
@@ -49,16 +50,17 @@
     </select>
 
     <select id="listBlog" resultMap="BlogMapper">
-        select id, title, content, firstpic, flag, views, appreciation,
+        select id, title, content, description, firstpic, flag, views, appreciation,
         copyright, commentable, publish, recommend, createtime, updatetime, type_id
         from t_blog
     </select>
 
     <insert id="saveBlog" parameterType="Blog" useGeneratedKeys="true" keyProperty="id">
-        insert into t_blog (title, content, firstPic, flag, views, appreciation, copyright, commentAble, publish, recommend, createTime, updateTime, type_id)
+        insert into t_blog (title, content, description, firstPic, flag, views, appreciation, copyright, commentAble, publish, recommend, createTime, updateTime, type_id)
         values (
             #{title, jdbcType=VARCHAR},
             #{content, jdbcType=VARCHAR},
+            #{description, jdbcType=VARCHAR},
             #{firstPic, jdbcType=VARCHAR},
             #{flag, jdbcType=VARCHAR},
             #{views, jdbcType=INTEGER},
@@ -74,13 +76,13 @@
     </insert>
 
     <update id="updateBlog" parameterType="Blog">
-        update t_blog set title=#{title}, content=#{content}, firstPic=#{firstPic}, flag=#{flag},
+        update t_blog set title=#{title}, content=#{content}, description=#{description}, firstPic=#{firstPic}, flag=#{flag},
         views=#{views}, appreciation=#{appreciation}, copyright=#{copyright}, commentAble=#{commentAble},
         publish=#{publish}, recommend=#{recommend}, createTime=#{createTime}, updateTime=#{updateTime}, type_id=#{type.id}
         where Id=#{id}
     </update>
 
-    <delete id="deleteBlog" parameterType="Integer">
+    <delete id="deleteBlogById" parameterType="Integer">
         delete from t_blog where Id=#{id}
     </delete>
 

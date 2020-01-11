@@ -1,6 +1,10 @@
 package cn.xudam.blog.controller.admin;
 
+import cn.xudam.blog.dto.cond.BlogCond;
+import cn.xudam.blog.exception.NotFoundException;
+import cn.xudam.blog.pojo.Blog;
 import cn.xudam.blog.pojo.Type;
+import cn.xudam.blog.service.BlogService;
 import cn.xudam.blog.service.TypeService;
 import com.github.pagehelper.PageInfo;
 import com.sun.istack.internal.NotNull;
@@ -22,6 +26,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class TypeController {
 
     private TypeService typeService;
+
+    private BlogService blogService;
+
+    @Autowired
+    public void setBlogService(BlogService blogService) {
+        this.blogService = blogService;
+    }
 
     @Autowired
     public void setTypeService(TypeService typeService) {
@@ -59,8 +70,15 @@ public class TypeController {
 
     @GetMapping("/types/delete/{id}")
     public String deleteType(@PathVariable("id") Integer id, RedirectAttributes attributes){
-        typeService.deleteType(id);
-        attributes.addFlashAttribute("message", "删除成功");
+        BlogCond blogCond = new BlogCond();
+        blogCond.setTypeId(id);
+        PageInfo<Blog> pageInfo = blogService.listBlogByCond(blogCond);
+        if(pageInfo.getList().size() > 0){
+            attributes.addFlashAttribute("message", "删除失败，当前分类仍有博客,请删除后再试！");
+        } else {
+            typeService.deleteType(id);
+            attributes.addFlashAttribute("message", "删除成功");
+        }
         return "redirect:/admin/types";
     }
 

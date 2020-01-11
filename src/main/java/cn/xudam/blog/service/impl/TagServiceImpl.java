@@ -4,11 +4,15 @@ import cn.xudam.blog.dao.TagMapper;
 import cn.xudam.blog.exception.NotFoundException;
 import cn.xudam.blog.pojo.Tag;
 import cn.xudam.blog.service.TagService;
+import cn.xudam.blog.util.Commons;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +29,7 @@ public class TagServiceImpl implements TagService {
         this.tagMapper = tagMapper;
     }
 
+    @Transactional(rollbackFor = SQLException.class)
     @Override
     public void saveTag(Tag tag) {
         Integer integer = tagMapper.saveTag(tag);
@@ -54,7 +59,7 @@ public class TagServiceImpl implements TagService {
         return tagMapper.listTag();
     }
 
-
+    @Transactional(rollbackFor = SQLException.class)
     @Override
     public void updateTag(Tag tag) {
         Tag tagById = tagMapper.getTagById(tag.getId());
@@ -67,6 +72,7 @@ public class TagServiceImpl implements TagService {
         }
     }
 
+    @Transactional(rollbackFor = SQLException.class)
     @Override
     public void deleteTag(Integer id) {
         Integer integer = tagMapper.deleteTag(id);

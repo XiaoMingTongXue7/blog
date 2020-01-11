@@ -7,11 +7,14 @@ import cn.xudam.blog.pojo.Blog;
 import cn.xudam.blog.pojo.Tag;
 import cn.xudam.blog.service.BlogService;
 import cn.xudam.blog.service.BlogTagRelationService;
+import cn.xudam.blog.util.Commons;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -52,7 +55,7 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public PageInfo<Blog> listBlogByCond(BlogCond blogCond) {
-        PageHelper.startPage(blogCond.getPageNum(), 5, "createTime" + (blogCond.getDesc()?" desc":""));
+        PageHelper.startPage(blogCond.getPageNum(), 5, "updateTime" + (blogCond.getDesc()?" desc":""));
         List<Blog> blogs = blogMapper.listBlogByCond(blogCond);
         return new PageInfo<Blog>(blogs);
     }
@@ -70,43 +73,34 @@ public class BlogServiceImpl implements BlogService {
         return listBlogByCond(blogCond);
     }
 
+    @Transactional(rollbackFor = SQLException.class)
     @Override
-    public void saveBlog(Blog blog) {
-        if(blog.getTitle()==null || blog.getContent()==null || blog.getType()==null || blog.getFlag()==null){
-            throw new NotFoundException("博客数据不完整，添加失败");
-        }
+    public void saveBlog(Blog blog, String tagIds) {
+
+        List<Integer> tagId = Commons.stringToList(tagIds);
         Integer integer;
         if(blog.getId() == null){
             blog.setUpdateTime(LocalDateTime.now());
             blog.setCreateTime(LocalDateTime.now());
             integer = blogMapper.saveBlog(blog);
+            blogTagService.saveBlogTagByIds(blog.getId(), tagId);
         } else {
             blog.setUpdateTime(LocalDateTime.now());
             integer = blogMapper.updateBlog(blog);
+            blogTagService.updateBlogTag(blog.getId(), tagId);
         }
-
         if(integer != 1){
             throw new NotFoundException("添加博客失败");
         }
     }
 
-    @Override
-    public void updateBlog(Blog blog) {
-        Blog blogById = blogMapper.getBlogById(blog.getId());
-        if(blogById == null){
-            throw new NotFoundException("要更新的博客不存在");
-        }
-        Integer integer = blogMapper.updateBlog(blog);
-        if(integer != 1){
-            throw new NotFoundException("更新博客失败");
-        }
-    }
-
+    @Transactional(rollbackFor = SQLException.class)
     @Override
     public void deleteBlog(Integer id) {
         if(id == null){
             throw new NotFoundException("删除博客失败");
         }
+        blogTagService.deleteBlogTagByBlogId(id);
         Integer integer = blogMapper.deleteBlogById(id);
         if(integer != 1){
             throw new NotFoundException("删除博客失败");

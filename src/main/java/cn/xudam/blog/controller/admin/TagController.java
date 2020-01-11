@@ -1,7 +1,9 @@
 package cn.xudam.blog.controller.admin;
 
+import cn.xudam.blog.pojo.Blog;
 import cn.xudam.blog.pojo.Tag;
 import cn.xudam.blog.pojo.Type;
+import cn.xudam.blog.service.BlogTagRelationService;
 import cn.xudam.blog.service.TagService;
 import cn.xudam.blog.service.TypeService;
 import com.github.pagehelper.PageInfo;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 /**
  * @author 鸣
  * 2020/1/6 10:04
@@ -24,6 +28,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class TagController {
 
     private TagService tagService;
+    private BlogTagRelationService blogTagService;
+
+    @Autowired
+    public void setBlogTagService(BlogTagRelationService blogTagRelationService) {
+        this.blogTagService = blogTagRelationService;
+    }
 
     @Autowired
     public void setTagService(TagService tagService) {
@@ -61,8 +71,13 @@ public class TagController {
 
     @GetMapping("/tags/delete/{id}")
     public String deleteTag(@PathVariable("id") Integer id, RedirectAttributes attributes){
-        tagService.deleteTag(id);
-        attributes.addFlashAttribute("message", "删除成功");
+        List<Blog> blogs = blogTagService.getBlogsByTagId(id);
+        if(blogs.size() > 0){
+            attributes.addFlashAttribute("message", "删除失败，当前分类仍有博客，请删除后再试");
+        } else {
+            tagService.deleteTag(id);
+            attributes.addFlashAttribute("message", "删除成功");
+        }
         return "redirect:/admin/tags";
     }
 

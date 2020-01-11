@@ -16,6 +16,11 @@
         where blog_id=#{blogId} and tag_id=#{tagId}
     </delete>
 
+    <delete id="deleteBlogTagById" parameterType="Integer">
+        delete from t_blog_tags
+        where blog_id=#{blogId}
+    </delete>
+
     <select id="getBlogTagByBlogId" resultType="BlogTagRelation" parameterType="Integer">
         select id, blog_id, tag_id
         from t_blog_tags where blog_id=#{blogId}

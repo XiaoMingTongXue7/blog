@@ -2,6 +2,7 @@ package cn.xudam.blog.controller.admin;
 
 import cn.xudam.blog.dto.cond.BlogCond;
 import cn.xudam.blog.pojo.Blog;
+import cn.xudam.blog.pojo.Tag;
 import cn.xudam.blog.pojo.Type;
 import cn.xudam.blog.service.BlogService;
 import cn.xudam.blog.service.BlogTagRelationService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -71,21 +73,33 @@ public class BlogController {
     public String toBlogInput(Model model){
         model.addAttribute("types", typeService.listType());
         model.addAttribute("tags", tagService.listTag());
-
+        Object blog = model.getAttribute("blog");
+        if(blog == null){
+            model.addAttribute("blog", new Blog());
+        }
         return "admin/blogs-input";
     }
 
     @PostMapping("/blog/publish")
-    public String saveBlog(Blog blog, String tagIds){
-        blogService.saveBlog(blog);
-        List<Integer> tagId = Commons.stringToList(tagIds);
-        blogTagService.saveBlogTagByIds(blog.getId(), tagId);
+    public String saveBlog(Blog blog, String tagIds, RedirectAttributes attributes){
+        blogService.saveBlog(blog, tagIds);
+        attributes.addAttribute("message", "保存成功");
         return "redirect:/admin/blogs";
     }
 
     @GetMapping("/blogs/input/{id}")
     public String toBlogUpdate(@PathVariable("id")Integer blogId, Model model){
-        model.addAttribute("blog", blogService.getBlogById(blogId));
+        Blog blog = blogService.getBlogById(blogId);
+        List<Tag> tags = blog.getTags();
+        model.addAttribute("blog", blog);
+        model.addAttribute("tagIds", Commons.listToString(tags));
         return toBlogInput(model);
+    }
+
+    @GetMapping("/blogs/delete/{id}")
+    public String deleteBlog(@PathVariable("id")Integer blogId, RedirectAttributes attributes){
+        blogService.deleteBlog(blogId);
+        attributes.addAttribute("message", "删除成功");
+        return "redirect:/admin/blogs";
     }
 }

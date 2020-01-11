@@ -10,7 +10,9 @@ import cn.xudam.blog.pojo.Tag;
 import cn.xudam.blog.service.BlogTagRelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +44,7 @@ public class BlogTagRelationServiceImpl implements BlogTagRelationService {
         this.blogMapper = blogMapper;
     }
 
+    @Transactional(rollbackFor = SQLException.class)
     @Override
     public void saveBlogTagByIds(List<BlogTagRelation> tagId) {
         for (BlogTagRelation blogTagRelation : tagId) {
@@ -56,6 +59,7 @@ public class BlogTagRelationServiceImpl implements BlogTagRelationService {
         }
     }
 
+    @Transactional(rollbackFor = SQLException.class)
     @Override
     public void saveBlogTagByIds(Integer blogId, List<Integer> tagIds) {
         List<BlogTagRelation> blogTags = new ArrayList<>();
@@ -65,6 +69,7 @@ public class BlogTagRelationServiceImpl implements BlogTagRelationService {
         saveBlogTagByIds(blogTags);
     }
 
+    @Transactional(rollbackFor = SQLException.class)
     @Override
     public void saveBlogTagById(BlogTagRelation blogTagRelation) {
         List<BlogTagRelation> blogTagRelations = new ArrayList<>();
@@ -72,16 +77,13 @@ public class BlogTagRelationServiceImpl implements BlogTagRelationService {
         saveBlogTagByIds(blogTagRelations);
     }
 
+    @Transactional(rollbackFor = SQLException.class)
     @Override
-    public void deleteBlogTag(BlogTagRelation blogTagRelation) {
-        if(blogTagRelation.getBlogId() == null || blogTagRelation.getTagId() == null){
-            throw new NotFoundException("要删除的标签属性不明确");
+    public void deleteBlogTagByBlogId(Integer blogId) {
+        if(blogId == null){
+            throw new NotFoundException("blogId 为空");
         }
-        BlogTagRelation blogTagByBlogTagId = getBlogTagByBlogTagId(blogTagRelation);
-        if(blogTagByBlogTagId == null){
-            blogTagRelationMapper.deleteBlogTag(blogTagRelation);
-        }
-        throw new NotFoundException("要删除的标签不存在");
+        blogTagRelationMapper.deleteBlogTagById(blogId);
     }
 
     @Override
@@ -95,8 +97,6 @@ public class BlogTagRelationServiceImpl implements BlogTagRelationService {
         }
         return blogTags.get(0);
     }
-
-
 
     @Override
     public List<Tag> getTagsByBlogId(Integer blogId) {
@@ -128,11 +128,11 @@ public class BlogTagRelationServiceImpl implements BlogTagRelationService {
         return blogs;
     }
 
+    @Transactional(rollbackFor = SQLException.class)
     @Override
     public void updateBlogTag(Integer blogId, List<Integer> tagIds) {
-        for (Integer tagId : tagIds) {
-
-        }
+        deleteBlogTagByBlogId(blogId);
+        saveBlogTagByIds(blogId, tagIds);
     }
 
     @Override

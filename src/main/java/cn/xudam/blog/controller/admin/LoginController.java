@@ -1,5 +1,6 @@
 package cn.xudam.blog.controller.admin;
 
+import cn.xudam.blog.constant.WebConst;
 import cn.xudam.blog.pojo.User;
 import cn.xudam.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class LoginController {
 
     @GetMapping
     public String toLogin(HttpSession session){
-        if(session.getAttribute("user") == null){
+        if(session.getAttribute(WebConst.LOGIN_SESSION_KEY) == null){
             return "admin/login";
         }
         return "redirect:/admin/index.html";

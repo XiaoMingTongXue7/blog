@@ -20,7 +20,7 @@ public interface BlogTagRelationService {
 
     void saveBlogTagById(BlogTagRelation blogTagRelation);
 
-    void deleteBlogTag(BlogTagRelation blogTagRelation);
+    void deleteBlogTagByBlogId(Integer blogId);
 
     BlogTagRelation getBlogTagByBlogTagId(BlogTagRelation blogTagRelation);
 

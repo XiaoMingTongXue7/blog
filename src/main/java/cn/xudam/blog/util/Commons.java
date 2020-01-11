@@ -1,7 +1,10 @@
 package cn.xudam.blog.util;
 
 import cn.xudam.blog.exception.NotFoundException;
+import cn.xudam.blog.pojo.Blog;
 import cn.xudam.blog.pojo.Tag;
+import com.github.pagehelper.util.StringUtil;
+import com.sun.xml.internal.ws.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,8 @@ public class Commons {
             for (String id : ids) {
                 list.add(new Integer(id));
             }
+        } else {
+            throw new NotFoundException("tagIds 是空");
         }
         return list;
     }

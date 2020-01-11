@@ -1,14 +1,19 @@
 package cn.xudam.blog.service.impl;
 
 import cn.xudam.blog.dao.TypeMapper;
+import cn.xudam.blog.dto.cond.BlogCond;
 import cn.xudam.blog.exception.NotFoundException;
+import cn.xudam.blog.pojo.Blog;
 import cn.xudam.blog.pojo.Type;
+import cn.xudam.blog.service.BlogService;
 import cn.xudam.blog.service.TypeService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -20,11 +25,19 @@ public class TypeServiceImpl implements TypeService {
 
     private final TypeMapper typeMapper;
 
+    private BlogService blogService;
+
+    @Autowired
+    public void setBlogService(BlogService blogService) {
+        this.blogService = blogService;
+    }
+
     @Autowired
     public TypeServiceImpl(TypeMapper typeMapper) {
         this.typeMapper = typeMapper;
     }
 
+    @Transactional(rollbackFor = SQLException.class)
     @Override
     public void saveType(Type type) {
         Integer integer = typeMapper.saveType(type);
@@ -54,7 +67,7 @@ public class TypeServiceImpl implements TypeService {
         return pageInfo;
     }
 
-
+    @Transactional(rollbackFor = SQLException.class)
     @Override
     public void updateType(Type type) {
         Type typeById = typeMapper.getTypeById(type.getId());
@@ -67,6 +80,7 @@ public class TypeServiceImpl implements TypeService {
         }
     }
 
+    @Transactional(rollbackFor = SQLException.class)
     @Override
     public void deleteType(Integer id) {
         Integer integer = typeMapper.deleteType(id);

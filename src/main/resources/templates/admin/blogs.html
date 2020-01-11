@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/admin/common-admin::header(title='博客管理')"></head>
 <body>
 <div id="box">
@@ -42,14 +42,20 @@
           </div>
         </div>
       </div>
+      <div class="ui success message" th:if="${message!=null}">
+        <i class="close icon"></i>
+        <div class="header">提示：</div>
+        <p th:text="${message}">恭喜，操作成功！</p>
+      </div>
       <div id="table-container">
         <table th:fragment="blogList" class="ui padded teal large table">
           <thead>
           <tr>
-            <th></th>
+            <th>ID</th>
             <th>标题</th>
             <th>类型</th>
             <th>推荐</th>
+            <th>状态</th>
             <th>更新时间</th>
             <th>操作</th>
           </tr>
@@ -61,6 +67,7 @@
             <td th:text="${blog.getTitle()}">刻意练习清单</td>
             <td th:text="${blog.getType().getName()}">认知升级</td>
             <td th:text="${blog.getRecommend()} ? '是' : '否'">是</td>
+            <td th:text="${blog.getPublish()} ? '发布' : '草稿'">是</td>
             <td th:text="${#strings.replace(blog.getUpdateTime(),'T',' ')}">2017-10-02 09:45</td>
             <td>
               <a href="#" th:href="@{'/admin/blogs/input/'+${blog.getId()}}" class="ui large teal basic button">编辑</a>
@@ -70,7 +77,7 @@
           </tbody>
           <tfoot>
           <tr>
-            <th colspan="6">
+            <th colspan="7">
               <div class="ui mini pagination menu">
                 <a onclick="page(this)" th:attr="data-page=${pageInfo.getPrePage()}" th:if="${!pageInfo.isFirstPage}" class="item" >上一页</a>
                 <a onclick="page(this)" th:attr="data-page=${pageInfo.getNextPage()}" th:if="${!pageInfo.isLastPage}" class="item">下一页</a>
@@ -112,7 +119,14 @@
         recommend : $("[name='recommend']").prop('checked'),
         pageNum : $("[name='page']").val()
       });
+      window.setTimeout(footerPosition, 150);
+      window.setTimeout(footerPosition, 300);
     }
+
+    //消息提示关闭初始化
+    $('.message .close').on('click', function () {
+      $(this).closest('.message').transition('fade');
+    });
   </script>
 </body>
 </html>

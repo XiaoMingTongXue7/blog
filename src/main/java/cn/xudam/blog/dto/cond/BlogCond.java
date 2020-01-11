@@ -1,15 +1,40 @@
 package cn.xudam.blog.dto.cond;
 
 /**
+ * 博客查询条件
  * @author 鸣
  * 2020/1/8 16:53
  */
 public class BlogCond {
 
+    /**
+     * 要查询的标题
+     * 可以模糊查询
+     */
     private String title;
+
+    /**
+     * 要查询的分类
+     */
     private Integer typeId;
+
+    /**
+     * 是否推荐
+     * true : 推荐
+     * false : 不推荐
+     */
     private Boolean recommend;
+
+    /**
+     * 页码
+     */
     private Integer pageNum = 1;
+
+    /**
+     * 是否倒叙排列
+     * true : 倒叙
+     * false : 顺序
+     */
     private Boolean isDesc = true;
 
     @Override

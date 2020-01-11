@@ -14,9 +14,16 @@ import java.util.List;
 @Repository
 public interface BlogTagRelationMapper {
 
+    /**
+     *
+     * @param tagId
+     * @return
+     */
     Integer saveBlogTagByIds(List<BlogTagRelation> tagId);
 
     Integer deleteBlogTag(BlogTagRelation blogTagRelation);
+
+    Integer deleteBlogTagById(Integer blogId);
 
     List<BlogTagRelation> getBlogTagByBlogTagId(BlogTagRelation blogTagRelation);
 
