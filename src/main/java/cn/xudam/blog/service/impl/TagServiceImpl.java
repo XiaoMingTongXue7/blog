@@ -9,6 +9,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author 鸣
  * 2020/1/7 13:24
@@ -24,8 +26,8 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void saveTag(Tag Tag) {
-        Integer integer = tagMapper.saveTag(Tag);
+    public void saveTag(Tag tag) {
+        Integer integer = tagMapper.saveTag(tag);
         if(integer != 1){
             throw new NotFoundException("添加分类失败");
         }
@@ -47,14 +49,19 @@ public class TagServiceImpl implements TagService {
         return pageInfo;
     }
 
+    @Override
+    public List<Tag> listTag() {
+        return tagMapper.listTag();
+    }
+
 
     @Override
-    public void updateTag(Tag Tag) {
-        Tag TagById = tagMapper.getTagById(Tag.getId());
-        if(TagById == null){
+    public void updateTag(Tag tag) {
+        Tag tagById = tagMapper.getTagById(tag.getId());
+        if(tagById == null){
             throw new NotFoundException("要更新的分类不存在");
         }
-        Integer integer = tagMapper.updateTag(Tag);
+        Integer integer = tagMapper.updateTag(tag);
         if(integer != 1){
             throw new NotFoundException("更新分类失败");
         }

@@ -4,11 +4,15 @@ import cn.xudam.blog.dao.BlogMapper;
 import cn.xudam.blog.dto.cond.BlogCond;
 import cn.xudam.blog.exception.NotFoundException;
 import cn.xudam.blog.pojo.Blog;
+import cn.xudam.blog.pojo.Tag;
 import cn.xudam.blog.service.BlogService;
+import cn.xudam.blog.service.BlogTagRelationService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,12 +28,21 @@ public class BlogServiceImpl implements BlogService {
         this.blogMapper = blogMapper;
     }
 
+    private BlogTagRelationService blogTagService;
+
+    @Autowired
+    public void setBlogTagService(BlogTagRelationService blogTagRelationService) {
+        this.blogTagService = blogTagRelationService;
+    }
+
     @Override
-    public Blog getBlog(Integer id) {
+    public Blog getBlogById(Integer id) {
         if (id == null){
             throw new NotFoundException("输入的id不正确");
         }
-        return blogMapper.getBlogById(id);
+        Blog blog = blogMapper.getBlogById(id);
+        blog.setTags(blogTagService.getTagsByBlogId(blog.getId()));
+        return blog;
     }
 
     @Override
@@ -59,10 +72,19 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public void saveBlog(Blog blog) {
-        if(blog == null){
-            throw new NotFoundException("添加博客失败");
+        if(blog.getTitle()==null || blog.getContent()==null || blog.getType()==null || blog.getFlag()==null){
+            throw new NotFoundException("博客数据不完整，添加失败");
         }
-        Integer integer = blogMapper.saveBlog(blog);
+        Integer integer;
+        if(blog.getId() == null){
+            blog.setUpdateTime(LocalDateTime.now());
+            blog.setCreateTime(LocalDateTime.now());
+            integer = blogMapper.saveBlog(blog);
+        } else {
+            blog.setUpdateTime(LocalDateTime.now());
+            integer = blogMapper.updateBlog(blog);
+        }
+
         if(integer != 1){
             throw new NotFoundException("添加博客失败");
         }

@@ -15,13 +15,13 @@ import java.util.List;
 @Repository
 public interface TagMapper {
 
-    Integer saveTag(Tag Tag);
+    Integer saveTag(Tag tag);
 
     Tag getTagById(Integer id);
 
     List<Tag> listTag();
 
-    Integer updateTag(Tag Tag);
+    Integer updateTag(Tag tag);
 
     Integer deleteTag(Integer id);
 

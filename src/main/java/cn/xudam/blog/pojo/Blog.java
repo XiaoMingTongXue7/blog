@@ -22,17 +22,17 @@ public class Blog {
     //标记
     private String flag;
     //浏览次数
-    private Integer views;
+    private Integer views = 0;
     //赞赏开启
-    private Boolean appreciation;
+    private Boolean appreciation = false;
     //版权开启
-    private Boolean copyright;
+    private Boolean copyright = false;
     //评论开启
-    private Boolean commentAble;
+    private Boolean commentAble = false;
     //是否发布
-    private Boolean publish;
+    private Boolean publish = false;
     //是否推荐
-    private Boolean recommend;
+    private Boolean recommend = false;
     //创建时间
     private LocalDateTime createTime;
 

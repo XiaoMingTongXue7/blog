@@ -16,6 +16,8 @@ public interface BlogTagRelationService {
 
     void saveBlogTagByIds(List<BlogTagRelation> tagId);
 
+    void saveBlogTagByIds(Integer blogId, List<Integer> tagIds);
+
     void saveBlogTagById(BlogTagRelation blogTagRelation);
 
     void deleteBlogTag(BlogTagRelation blogTagRelation);
@@ -25,6 +27,8 @@ public interface BlogTagRelationService {
     List<Tag> getTagsByBlogId(Integer blogId);
 
     List<Blog> getBlogsByTagId(Integer tagId);
+
+    void updateBlogTag(Integer blogId, List<Integer> tagIds);
 
     List<BlogTagRelation> getBlogTagsByBlogTagId(BlogTagRelation blogTagRelation);
 

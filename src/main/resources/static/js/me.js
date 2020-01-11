@@ -21,4 +21,5 @@ $(function () {
     }
     footerPosition();
     $(window).resize(footerPosition);
+    window.setTimeout(footerPosition, 100);
 });

@@ -17,16 +17,16 @@ public class Comment {
     private LocalDateTime createTime;
     private Blog blog;
 
-    private List<Comment> ReplyComments = new ArrayList<>();
+    private List<Comment> replyComments = new ArrayList<>();
     private Comment parentComment;
 
 
     public List<Comment> getReplyComments() {
-        return ReplyComments;
+        return replyComments;
     }
 
     public void setReplyComments(List<Comment> replyComments) {
-        ReplyComments = replyComments;
+        this.replyComments = replyComments;
     }
 
     public Comment getParentComment() {

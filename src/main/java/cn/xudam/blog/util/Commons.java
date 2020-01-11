@@ -12,18 +12,18 @@ import java.util.List;
  */
 public class Commons {
 
-    public static List<Integer> string_list(String tagIds){
+    public static List<Integer> stringToList(String tagIds){
         List<Integer> list = new ArrayList<>();
-        if("".equals(tagIds) && tagIds != null){
+        if(!"".equals(tagIds) && tagIds != null){
             String[] ids = tagIds.split(",");
-            for (int i = 0; i < ids.length; i++) {
-                list.add(new Integer(ids[i]));
+            for (String id : ids) {
+                list.add(new Integer(id));
             }
         }
         return list;
     }
 
-    public static StringBuffer list_string(List<Tag> tags){
+    public static StringBuffer listToString(List<Tag> tags){
         if(!tags.isEmpty()){
             StringBuffer ids = new StringBuffer();
             for (Tag tag : tags) {

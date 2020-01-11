@@ -14,6 +14,11 @@ public class BlogTagRelation {
         return id;
     }
 
+    public BlogTagRelation(Integer blogId, Integer tagId) {
+        this.blogId = blogId;
+        this.tagId = tagId;
+    }
+
     @Override
     public String toString() {
         return "BlogTagRelation{" +

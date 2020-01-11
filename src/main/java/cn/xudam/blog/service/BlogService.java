@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface BlogService {
 
-    Blog getBlog(Integer id);
+    Blog getBlogById(Integer id);
 
     PageInfo<Blog> listBlog(Integer pageNum);
 

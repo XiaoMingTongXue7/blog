@@ -54,7 +54,7 @@
         from t_blog
     </select>
 
-    <insert id="saveBlog" parameterType="Blog">
+    <insert id="saveBlog" parameterType="Blog" useGeneratedKeys="true" keyProperty="id">
         insert into t_blog (title, content, firstPic, flag, views, appreciation, copyright, commentAble, publish, recommend, createTime, updateTime, type_id)
         values (
             #{title, jdbcType=VARCHAR},
@@ -76,7 +76,7 @@
     <update id="updateBlog" parameterType="Blog">
         update t_blog set title=#{title}, content=#{content}, firstPic=#{firstPic}, flag=#{flag},
         views=#{views}, appreciation=#{appreciation}, copyright=#{copyright}, commentAble=#{commentAble},
-        publish=#{publish}, recommend=#{recommend}, createTime=#{createTime}, updateTime=#{updateTime}
+        publish=#{publish}, recommend=#{recommend}, createTime=#{createTime}, updateTime=#{updateTime}, type_id=#{type.id}
         where Id=#{id}
     </update>
 

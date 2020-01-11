@@ -17,7 +17,7 @@
     <div class="ui container">
         <div class="ui inverted secondary stackable menu">
             <h2 class="ui teal header item">管理后台</h2>
-            <a th:href="@{/admin/blogs}" th:classappend="${active=='blog'?'active':''}" class="m-item item m-mobile-hide"><i class="mini home icon"></i>博客</a>
+            <a th:href="@{/admin/blogs}" th:classappend="${active=='blogs'?'active':''}" class="m-item item m-mobile-hide"><i class="mini home icon"></i>博客</a>
             <a th:href="@{/admin/types}" th:classappend="${active=='type'?'active':''}" class="m-item item m-mobile-hide"><i class="mini idea icon"></i>分类</a>
             <a th:href="@{/admin/tags}" th:classappend="${active=='tag'?'active':''}" class="m-item item m-mobile-hide"><i class="mini tags icon"></i>标签</a>
             <div class="right m-item m-mobile-hide menu" th:if="${session.user!=null}">

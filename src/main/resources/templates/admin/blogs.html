@@ -3,11 +3,11 @@
 <head th:replace="/admin/common-admin::header(title='博客管理')"></head>
 <body>
 <div id="box">
-  <div th:replace="/admin/common-admin::nav-admin(active='blog')"></div>
+  <div th:replace="/admin/common-admin::nav-admin(active='blogs')"></div>
   <div class="ui attached pointing menu">
     <div class="ui container">
       <div class="right menu">
-        <a href="#" class="item">发布</a>
+        <a th:href="@{/admin/blogs/input}" class="item">发布</a>
         <a href="#" class="teal active item">列表</a>
       </div>
     </div>
@@ -63,7 +63,7 @@
             <td th:text="${blog.getRecommend()} ? '是' : '否'">是</td>
             <td th:text="${#strings.replace(blog.getUpdateTime(),'T',' ')}">2017-10-02 09:45</td>
             <td>
-              <a href="#" th:href="@{'/admin/blogs/update/'+${blog.getId()}}" class="ui large teal basic button">编辑</a>
+              <a href="#" th:href="@{'/admin/blogs/input/'+${blog.getId()}}" class="ui large teal basic button">编辑</a>
               <a href="#" th:href="@{'/admin/blogs/delete/'+${blog.getId()}}" class="ui large red basic button">删除</a>
             </td>
           </tr>
@@ -72,10 +72,10 @@
           <tr>
             <th colspan="6">
               <div class="ui mini pagination menu">
-                <a onclick="page(this)" th:attr="data-page=${pageInfo.getPrePage()}" th:if="${pageInfo.getPrePage()>0}" class="item" >上一页</a>
-                <a onclick="page(this)" th:attr="data-page=${pageInfo.getNextPage()}" th:if="${pageInfo.getNextPage()!=0}" class="item">下一页</a>
+                <a onclick="page(this)" th:attr="data-page=${pageInfo.getPrePage()}" th:if="${!pageInfo.isFirstPage}" class="item" >上一页</a>
+                <a onclick="page(this)" th:attr="data-page=${pageInfo.getNextPage()}" th:if="${!pageInfo.isLastPage}" class="item">下一页</a>
               </div>
-              <a href="#" class="ui mini right floated teal basic button">新增</a>
+              <a th:href="@{/admin/blogs/input}" class="ui mini right floated teal basic button">新增</a>
             </th>
           </tr>
           </tfoot>
@@ -110,7 +110,7 @@
         title : $("[name='title']").val(),
         typeId : $("[name='typeId']").val(),
         recommend : $("[name='recommend']").prop('checked'),
-        page : $("[name='page']").val()
+        pageNum : $("[name='page']").val()
       });
     }
   </script>

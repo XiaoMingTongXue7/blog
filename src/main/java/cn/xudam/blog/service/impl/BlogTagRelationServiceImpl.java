@@ -21,11 +21,11 @@ import java.util.List;
 @Service
 public class BlogTagRelationServiceImpl implements BlogTagRelationService {
 
-    TagMapper tagMapper;
+    private TagMapper tagMapper;
 
     private final BlogTagRelationMapper blogTagRelationMapper;
 
-    BlogMapper blogMapper;
+    private BlogMapper blogMapper;
 
     @Autowired
     public BlogTagRelationServiceImpl(BlogTagRelationMapper blogTagRelationMapper) {
@@ -45,18 +45,24 @@ public class BlogTagRelationServiceImpl implements BlogTagRelationService {
     @Override
     public void saveBlogTagByIds(List<BlogTagRelation> tagId) {
         for (BlogTagRelation blogTagRelation : tagId) {
-            if(blogTagRelation.getBlogId() == null || blogTagRelation.getTagId() == null){
-                throw new NotFoundException("要添加的标签属性不明确");
-            }
-            List<BlogTagRelation> blogTagByBlogTagId = blogTagRelationMapper.getBlogTagByBlogTagId(blogTagRelation);
-            if(blogTagByBlogTagId.size() == 0){
-                throw new NotFoundException("要添加的标签不存在");
+            BlogTagRelation blogTagByBlogTagId = getBlogTagByBlogTagId(blogTagRelation);
+            if(blogTagByBlogTagId != null){
+                throw new NotFoundException("要添加的标签已存在");
             }
         }
         Integer integer = blogTagRelationMapper.saveBlogTagByIds(tagId);
-        if(!(integer == tagId.size())){
+        if(integer != tagId.size()){
             throw new NotFoundException("添加标签失败");
         }
+    }
+
+    @Override
+    public void saveBlogTagByIds(Integer blogId, List<Integer> tagIds) {
+        List<BlogTagRelation> blogTags = new ArrayList<>();
+        for (Integer tagId : tagIds) {
+            blogTags.add(new BlogTagRelation(blogId, tagId));
+        }
+        saveBlogTagByIds(blogTags);
     }
 
     @Override
@@ -84,6 +90,9 @@ public class BlogTagRelationServiceImpl implements BlogTagRelationService {
             throw new NotFoundException("要添加的标签属性不明确");
         }
         List<BlogTagRelation> blogTags = getBlogTagsByBlogTagId(blogTagRelation);
+        if(blogTags.size() == 0){
+            return null;
+        }
         return blogTags.get(0);
     }
 
@@ -117,6 +126,13 @@ public class BlogTagRelationServiceImpl implements BlogTagRelationService {
             blogs.add(blogMapper.getBlogById(id.getBlogId()));
         }
         return blogs;
+    }
+
+    @Override
+    public void updateBlogTag(Integer blogId, List<Integer> tagIds) {
+        for (Integer tagId : tagIds) {
+
+        }
     }
 
     @Override

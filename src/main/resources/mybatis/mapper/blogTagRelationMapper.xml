@@ -7,7 +7,7 @@
     <insert id="saveBlogTagByIds" parameterType="List">
         insert into t_blog_tags (blog_id, tag_id) VALUES
         <foreach collection="list" item="list" open="" close="" separator=",">
-            (#{list.blogId}, #{list.tagId})
+            (#{list.blogId, jdbcType=INTEGER}, #{list.tagId, jdbcType=INTEGER})
         </foreach>
     </insert>
 
