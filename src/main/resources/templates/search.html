@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::header(title='搜索结果')"></head>
+<body>
+
+<!--导航-->
+<div th:replace="common::mynav(active='tags')"></div>
+
+  <!--中间内容-->
+  <div  class="m-container-small m-padded-tb-big">
+    <div class="ui container">
+      <!--header-->
+      <div class="ui top attached segment">
+        <div class="ui middle aligned two column grid">
+          <div class="column">
+            <h3 class="ui teal header">搜索结果</h3>
+          </div>
+          <div class="right aligned column">
+            共 <h2 class="ui orange header m-inline-block m-text-thin" th:text="${page.getTotal()}"> 14 </h2> 个
+          </div>
+        </div>
+      </div>
+      <div class="ui top attached teal segment">
+        <div class="ui padded vertical segment m-padded-tb-large" th:each="blog : ${page.getList()}">
+          <!--/*@thymesVar id="blog" type="cn.xudam.blog.pojo.Blog"*/-->
+          <div class="ui mobile aligned reversed stackable grid" >
+            <div class="eleven wide column">
+              <h3 class="ui header" th:text="${blog.title}">你真的理解什么是财富自由吗？</h3>
+              <p class="m-text" th:text="|${blog.description}...|">正确做好任何一件事情的前提是清晰、正确的理解目标。而事实是，我们很多人很多时候根本没有对目标正确的定义，甚至根本从来就没有想过，只是大家都那么做而已…...</p>
+              <div class="ui grid">
+                <div class="eleven wide column">
+                  <div class="ui mini horizontal link list">
+                    <div class="item">
+                      <i class="calendar icon"></i>
+                      <span th:text="${#strings.replace(blog.getUpdateTime(),'T',' ')}">2017-10-01</span>
+                    </div>
+                    <div class="item">
+                      <i class="eye icon"></i>
+                      <span th:text="${blog.views}">2342</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="right aligned five wide column">
+                  <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin" th:text="${blog.type.name}">认知升级</a>
+                </div>
+              </div>
+            </div>
+            <div class="five wide column">
+              <a href="#" target="_blank">
+                <img th:src="@{${blog.firstPic}}" alt="" class="ui rounded image">
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="ui padded vertical segment m-padded-tb-large m-mobile-lr-clear">
+          <div class="ui mobile reversed stackable grid">
+            <div class="eleven wide column">
+              <h3 class="ui header">你真的理解什么是财富自由吗？</h3>
+              <p class="m-text">正确做好任何一件事情的前提是清晰、正确的理解目标。而事实是，我们很多人很多时候根本没有对目标正确的定义，甚至根本从来就没有想过，只是大家都那么做而已…...</p>
+              <div class="ui stackable grid">
+                <div class="row">
+                  <div class="eleven wide column">
+                    <div class="ui mini horizontal link list">
+                      <div class="item">
+                        <img src="https://unsplash.it/100/100?image=1005" alt="" class="ui avatar image">
+                        <div class="content"><a href="#" class="header">李仁密</a></div>
+                      </div>
+                      <div class="item">
+                        <i class="calendar icon"></i> 2017-10-01
+                      </div>
+                      <div class="item">
+                        <i class="eye icon"></i> 2342
+                      </div>
+                    </div>
+                  </div>
+                  <div class="right aligned five wide column">
+                    <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin">认知升级</a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="column">
+                    <a href="#" class="ui  basic teal left pointing label m-padded-mini m-text-thin">方法论</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="five wide column">
+              <a href="#" target="_blank">
+                <img src="https://unsplash.it/800/450?image=1005" alt="" class="ui rounded image">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--分页-->
+      <div th:replace="common::mypage"></div>
+    </div>
+  </div>
+<!--底部footer-->
+<div th:replace="common::myfooter"></div>
+  <script>
+    $('.menu.toggle').click(function () {
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+  </script>
+</body>
+</html>

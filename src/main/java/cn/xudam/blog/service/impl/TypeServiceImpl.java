@@ -4,6 +4,7 @@ import cn.xudam.blog.dao.TypeMapper;
 import cn.xudam.blog.dto.cond.BlogCond;
 import cn.xudam.blog.exception.NotFoundException;
 import cn.xudam.blog.pojo.Blog;
+import cn.xudam.blog.pojo.Tag;
 import cn.xudam.blog.pojo.Type;
 import cn.xudam.blog.service.BlogService;
 import cn.xudam.blog.service.TypeService;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -67,13 +70,26 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
-    public List<Type> listType() {
-        return typeMapper.listType();
+    public List<Type> listTypeTop() {
+        List<Type> types = listType();
+        for (Type type : types) {
+            List<Blog> blogs = blogService.listBlogByType(type);
+            type.setBlogs(blogs);
+        }
+        Collections.sort(types, Comparator.comparing(
+                Type::getBlogs, (s, t) -> t.size()-s.size()
+        ));
+        return types;
     }
 
     @Override
     public PageInfo<Type> listType(Integer pageNum) {
         return listType(pageNum, true);
+    }
+
+    @Override
+    public List<Type> listType() {
+        return typeMapper.listType();
     }
 
     @Override

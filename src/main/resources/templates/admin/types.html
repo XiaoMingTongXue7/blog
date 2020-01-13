@@ -37,7 +37,7 @@
         <tfoot>
         <tr>
           <th colspan="6" >
-            <div class="ui big pagination menu">
+            <div class="ui big pagination menu" th:if="${pageInfo.hasPreviousPage || pageInfo.hasNextPage}">
               <a th:if="${!pageInfo.isFirstPage}" th:href="@{'/admin/types/'+${pageInfo.getPrePage()}}" class="  item" >上一页</a>
               <a th:if="${!pageInfo.isLastPage}" th:href="@{'/admin/types/'+${pageInfo.getNextPage()}}" class=" item">下一页</a>
             </div>

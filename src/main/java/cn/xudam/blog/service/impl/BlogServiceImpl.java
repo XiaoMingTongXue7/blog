@@ -6,6 +6,7 @@ import cn.xudam.blog.dto.cond.BlogCond;
 import cn.xudam.blog.exception.NotFoundException;
 import cn.xudam.blog.pojo.Blog;
 import cn.xudam.blog.pojo.Tag;
+import cn.xudam.blog.pojo.Type;
 import cn.xudam.blog.service.BlogService;
 import cn.xudam.blog.service.BlogTagRelationService;
 import cn.xudam.blog.util.Commons;
@@ -79,6 +80,21 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public List<Blog> listBlog() {
         return blogMapper.listBlog();
+    }
+
+    @Override
+    public List<Blog> listBlogByType(Type type) {
+        BlogCond blogCond = new BlogCond();
+        blogCond.setTypeId(type.getId());
+        return blogMapper.listBlogByCond(blogCond);
+    }
+
+    @Override
+    public List<Blog> listBlogByTag(Tag tag) {
+        if(tag.getId() == null){
+            throw new NotFoundException("没有正确的标签");
+        }
+        return blogTagService.getBlogsByTagId(tag.getId());
     }
 
     @Override

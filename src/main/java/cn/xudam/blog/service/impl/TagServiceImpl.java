@@ -2,7 +2,9 @@ package cn.xudam.blog.service.impl;
 
 import cn.xudam.blog.dao.TagMapper;
 import cn.xudam.blog.exception.NotFoundException;
+import cn.xudam.blog.pojo.Blog;
 import cn.xudam.blog.pojo.Tag;
+import cn.xudam.blog.service.BlogTagRelationService;
 import cn.xudam.blog.service.TagService;
 import cn.xudam.blog.util.Commons;
 import com.github.pagehelper.PageHelper;
@@ -13,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -22,7 +26,13 @@ import java.util.List;
 @Service
 public class TagServiceImpl implements TagService {
 
+    private BlogTagRelationService blogTagService;
     private final TagMapper tagMapper;
+
+    @Autowired
+    public void setBlogTagRelationService(BlogTagRelationService blogTagRelationService) {
+        this.blogTagService = blogTagRelationService;
+    }
 
     @Autowired
     public TagServiceImpl(TagMapper tagMapper) {
@@ -72,6 +82,20 @@ public class TagServiceImpl implements TagService {
     @Override
     public List<Tag> listTag() {
         return tagMapper.listTag();
+    }
+
+    @Override
+    public List<Tag> listTagTop() {
+        List<Tag> tags = listTag();
+        for (Tag tag : tags) {
+            List<Blog> blogs = blogTagService.getBlogsByTagId(tag.getId());
+            tag.setBlogs(blogs);
+        }
+
+        Collections.sort(tags, Comparator.comparing(
+                Tag::getBlogs, (s, t) -> t.size()-s.size()
+        ));
+        return tags;
     }
 
     @Transactional(rollbackFor = SQLException.class)

@@ -3,6 +3,7 @@ package cn.xudam.blog.service;
 import cn.xudam.blog.dto.cond.BlogCond;
 import cn.xudam.blog.pojo.Blog;
 import cn.xudam.blog.pojo.Tag;
+import cn.xudam.blog.pojo.Type;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -54,6 +55,18 @@ public interface BlogService {
      * @return 所有的博客列表
      */
     List<Blog> listBlog();
+
+    /**
+     * 通过分类获取该分类的所有博客
+     * @return
+     */
+    List<Blog> listBlogByType(Type type);
+
+    /**
+     * 通过标签获取该标签的所有博客
+     * @return
+     */
+    List<Blog> listBlogByTag(Tag tag);
 
     /**
      * 通过页码和排序方式查询博客

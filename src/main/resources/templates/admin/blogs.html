@@ -78,9 +78,9 @@
           <tfoot>
           <tr>
             <th colspan="7">
-              <div class="ui mini pagination menu">
-                <a onclick="page(this)" th:attr="data-page=${pageInfo.getPrePage()}" th:if="${!pageInfo.isFirstPage}" class="item" >上一页</a>
-                <a onclick="page(this)" th:attr="data-page=${pageInfo.getNextPage()}" th:if="${!pageInfo.isLastPage}" class="item">下一页</a>
+              <div class="ui mini pagination menu" th:if="${pageInfo.hasPreviousPage || pageInfo.hasNextPage}">
+                <a onclick="page(this)" th:attr="data-page=${pageInfo.getPrePage()}" th:if="${pageInfo.hasPreviousPage}" class="item" >上一页</a>
+                <a onclick="page(this)" th:attr="data-page=${pageInfo.getNextPage()}" th:if="${pageInfo.hasNextPage}" class="item">下一页</a>
               </div>
               <a th:href="@{/admin/blogs/input}" class="ui right floated teal basic button">新增</a>
             </th>

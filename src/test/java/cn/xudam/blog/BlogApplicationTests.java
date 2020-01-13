@@ -5,9 +5,11 @@ import cn.xudam.blog.dao.TypeMapper;
 import cn.xudam.blog.dto.cond.BlogCond;
 import cn.xudam.blog.pojo.Blog;
 import cn.xudam.blog.pojo.BlogTagRelation;
+import cn.xudam.blog.pojo.Tag;
 import cn.xudam.blog.pojo.Type;
 import cn.xudam.blog.service.*;
 import cn.xudam.blog.util.Commons;
+import cn.xudam.blog.util.MarkdownUtils;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,12 +100,22 @@ class BlogApplicationTests {
 
     @Test
     void contextLoads5() {
-        BlogCond blogCond = new BlogCond();
-        blogCond.setTypeId(6);
-        PageInfo<Blog> pageInfo = blogService.listBlogByCond(blogCond);
-        System.out.println(pageInfo);
-        for (Blog blog : pageInfo.getList()) {
-            System.out.println(blog);
+        List<Tag> tags = tagService.listTagTop();
+        for (Tag tag : tags) {
+            System.out.println(tag.getBlogs().size());
         }
+    }
+
+    @Test
+    void contextLoads6() {
+        PageInfo<Blog> blogPageInfo = blogService.listBlog(1);
+        System.out.println(blogPageInfo);
+    }
+
+    @Test
+    void contextLoads7() {
+        Blog blog = blogService.getBlogById(29);
+        String s = MarkdownUtils.markdownToHtml(blog.getContent());
+        System.out.println(s);
     }
 }

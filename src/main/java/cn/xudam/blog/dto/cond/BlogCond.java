@@ -14,6 +14,12 @@ public class BlogCond {
     private String title;
 
     /**
+     * 要查询的描述
+     * 可以模糊查询
+     */
+    private String description;
+
+    /**
      * 要查询的分类
      */
     private Integer typeId;
@@ -41,11 +47,20 @@ public class BlogCond {
     public String toString() {
         return "BlogCond{" +
                 "title='" + title + '\'' +
+                ", description='" + description + '\'' +
                 ", typeId=" + typeId +
                 ", recommend=" + recommend +
                 ", pageNum=" + pageNum +
                 ", isDesc=" + isDesc +
                 '}';
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Boolean getDesc() {

@@ -43,8 +43,12 @@
         copyright, commentable, publish, recommend, createtime, updatetime, type_id
         from t_blog
         <where>
-            <if test="title != null">
+            <if test="title != null and description == null">
                 and title like concat('%',#{title, jdbcType=VARCHAR},'%')
+            </if>
+            <if test="title != null and description != null">
+                and title like concat('%',#{title, jdbcType=VARCHAR},'%')
+                or description like concat('%',#{description, jdbcType=VARCHAR},'%')
             </if>
             <if test="typeId != null">
                 and type_Id = #{typeId, jdbcType=INTEGER}

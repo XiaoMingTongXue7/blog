@@ -7,13 +7,13 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
-    <link rel="stylesheet" th:href="@{css/typo.css}">
-    <link rel="stylesheet" th:href="@{css/animate.css}" href="../static/css/animate.css">
-    <link rel="stylesheet" th:href="@{lib/prism/prism.css}" href="../static/lib/prism/prism.css">
-    <link rel="stylesheet" th:href="@{lib/tocbot/tocbot.css}" href="../static/lib/tocbot/tocbot.css">
-    <link rel="stylesheet" th:href="@{css/me.css}" href="../static/css/me.css">
-    <link rel="stylesheet" th:href="@{lib/editormd/css/editormd.min.css}">
-    <script th:src="@{js/me.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/typo.css}">
+    <link rel="stylesheet" th:href="@{/css/animate.css}" href="../static/css/animate.css">
+    <link rel="stylesheet" th:href="@{/lib/prism/prism.css}" href="../static/lib/prism/prism.css">
+    <link rel="stylesheet" th:href="@{/lib/tocbot/tocbot.css}" href="../static/lib/tocbot/tocbot.css">
+    <link rel="stylesheet" th:href="@{/css/me.css}" href="../static/css/me.css">
+    <link rel="stylesheet" th:href="@{/lib/editormd/css/editormd.min.css}">
+    <script th:src="@{/js/me.js}"></script>
 </head>
 <body>
 <!--导航-->
@@ -27,10 +27,12 @@
             <a href="#" th:classappend="${active=='archives'?'active':''}" class="m-item item m-mobile-hide"><i class="mini clone icon"></i>归档</a>
             <a href="#" th:classappend="${active=='about'?'active':''}" class="m-item item m-mobile-hide"><i class="mini info icon"></i>关于我</a>
             <div class="right m-item item m-mobile-hide">
-                <div class="ui icon inverted transparent input m-margin-tb-tiny">
-                    <input type="text" placeholder="Search....">
-                    <i class="search link icon"></i>
-                </div>
+                <form name="search" th:action="@{/search}" method="post" target="_blank">
+                    <div class="ui icon inverted transparent input m-margin-tb-tiny">
+                        <input type="text" name="query" placeholder="Search...." th:value="${query}">
+                        <i class="search link icon" onclick="document.forms['search'].submit()"></i>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -39,7 +41,19 @@
     </a>
 </nav>
 
-<footer th:fragment="myfooter" style="position: absolute; width: 100%; bottom: 0;" class="ui inverted vertical segment m-padded-tb-massive">
+<!--分页-->
+<div th:fragment="mypage" class="ui bottom attached segment" th:if="${page.hasPreviousPage || page.hasNextPage}">
+    <div class="ui middle aligned two column grid">
+        <div class="column">
+            <a th:if="${page.hasPreviousPage}" th:href="@{'/admin/types/'+${page.getPrePage()}}" class="  item" >上一页</a>
+        </div>
+        <div class="right aligned column">
+            <a th:if="${page.hasNextPage}" th:href="@{'/admin/types/'+${page.getNextPage()}}" class=" item">下一页</a>
+        </div>
+    </div>
+</div>
+
+<footer th:fragment="myfooter" class="ui inverted vertical segment m-padded-tb-massive">
     <div class="ui center aligned container">
         <div class="ui inverted divided stackable grid">
             <div class="three wide column">
@@ -72,7 +86,6 @@
         <div class="ui inverted section divider"></div>
         <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2016 - 2017 Lirenmi Designed by Lirenmi</p>
     </div>
-
 </footer>
 </body>
 </html>
