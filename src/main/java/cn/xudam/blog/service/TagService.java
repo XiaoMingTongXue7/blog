@@ -15,6 +15,10 @@ public interface TagService {
 
     Tag getTagById(Integer id);
 
+    Tag getTagByName(String name);
+
+    Boolean checkTagName(String name);
+
     PageInfo<Tag> listTag(Integer pageNum);
 
     PageInfo<Tag> listTag(Integer pageNum, Boolean isDesc);

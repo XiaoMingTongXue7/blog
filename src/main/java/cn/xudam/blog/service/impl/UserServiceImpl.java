@@ -3,7 +3,7 @@ package cn.xudam.blog.service.impl;
 import cn.xudam.blog.dao.UserMapper;
 import cn.xudam.blog.pojo.User;
 import cn.xudam.blog.service.UserService;
-import cn.xudam.blog.util.MD5Utils;
+import cn.xudam.blog.util.Md5Utils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User checkUser(String username, String password) {
-        User user = userMapper.checkUser(username, MD5Utils.code(password));
+        User user = userMapper.checkUser(username, Md5Utils.code(password));
         return user;
     }
 }

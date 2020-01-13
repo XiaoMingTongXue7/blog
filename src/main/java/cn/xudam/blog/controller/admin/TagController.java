@@ -1,5 +1,6 @@
 package cn.xudam.blog.controller.admin;
 
+import cn.xudam.blog.constant.WebConst;
 import cn.xudam.blog.pojo.Blog;
 import cn.xudam.blog.pojo.Tag;
 import cn.xudam.blog.pojo.Type;
@@ -61,11 +62,15 @@ public class TagController {
 
     @PostMapping("/tags")
     public String saveTag(@NotNull Tag tag, RedirectAttributes attributes){
-        if(tag.getName()==null){
-            return "redirect:/admin/tags";
+        if(tag.getName().length()>WebConst.MAX_TAG_NAME){
+            attributes.addFlashAttribute("message", "添加失败，输入的数据过长");
         }
-        tagService.saveTag(tag);
-        attributes.addFlashAttribute("message", "添加成功");
+        if(tagService.checkTagName(tag.getName())){
+            attributes.addFlashAttribute("message", "添加失败，您输入的标签已存在");
+        } else {
+            tagService.saveTag(tag);
+            attributes.addFlashAttribute("message", "添加成功");
+        }
         return "redirect:/admin/tags";
     }
 
@@ -90,11 +95,15 @@ public class TagController {
 
     @PostMapping("/tags/update")
     public String updateTag(@NotNull Tag tag, RedirectAttributes attributes){
-        if(tag.getId()==null || tag.getName()==null){
-            return "redirect:/admin/tags";
+        if(tag.getId()==null || tag.getName().length()>WebConst.MAX_TAG_NAME){
+            attributes.addFlashAttribute("message", "修改失败，输入的数据过长");
         }
-        tagService.updateTag(tag);
-        attributes.addFlashAttribute("message", "修改成功");
+        if(tagService.checkTagName(tag.getName())){
+            attributes.addFlashAttribute("message", "修改失败，您输入的标签已存在");
+        } else {
+            tagService.updateTag(tag);
+            attributes.addFlashAttribute("message", "修改成功");
+        }
         return "redirect:/admin/tags";
     }
 

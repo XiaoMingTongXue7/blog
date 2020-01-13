@@ -3,21 +3,41 @@ package cn.xudam.blog.pojo;
 import java.time.LocalDateTime;
 
 /**
+ * 用户实体类
  * @author 鸣
  * 2020/1/4 16:31
  */
 public class User {
 
+    /**
+     * 用户主键
+     */
     private Integer id;
+
+    /**
+     * 用户昵称
+     */
     private String nickName;
+
+    /**
+     * 用户名
+     */
     private String userName;
+
+    /**
+     * 密码
+     */
     private String password;
+
+    /**
+     * 用户邮箱
+     */
     private String email;
+
+    /**
+     * 用户头像
+     */
     private String avatar;
-    //创建时间
-    private LocalDateTime createTime;
-    //更新时间
-    private LocalDateTime updateTime;
 
     @Override
     public String toString() {
@@ -28,8 +48,6 @@ public class User {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", avatar='" + avatar + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
                 '}';
     }
 
@@ -79,22 +97,6 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
     }
 
     public User() {

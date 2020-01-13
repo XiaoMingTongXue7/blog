@@ -21,7 +21,7 @@
                 <div class="item" data-value="转载">转载</div>
               </div>
             </div>
-            <input type="text" name="title" placeholder="标题" th:value="*{title}">
+            <input type="text" maxlength="20" name="title" placeholder="标题" th:value="*{title}">
           </div>
         </div>
         <div class="field">
@@ -62,7 +62,7 @@
         <div class="field">
           <div class="ui left labeled input">
             <label class="ui teal basic label">首图</label>
-            <input type="text" name="firstPic" placeholder="首图引用地址" th:value="*{firstPic}">
+            <input type="text" name="firstPic" maxlength="50" placeholder="首图引用地址" th:value="*{firstPic}">
           </div>
         </div>
         <div class="required field">

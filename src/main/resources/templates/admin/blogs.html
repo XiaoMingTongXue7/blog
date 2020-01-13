@@ -82,7 +82,7 @@
                 <a onclick="page(this)" th:attr="data-page=${pageInfo.getPrePage()}" th:if="${!pageInfo.isFirstPage}" class="item" >上一页</a>
                 <a onclick="page(this)" th:attr="data-page=${pageInfo.getNextPage()}" th:if="${!pageInfo.isLastPage}" class="item">下一页</a>
               </div>
-              <a th:href="@{/admin/blogs/input}" class="ui mini right floated teal basic button">新增</a>
+              <a th:href="@{/admin/blogs/input}" class="ui right floated teal basic button">新增</a>
             </th>
           </tr>
           </tfoot>
@@ -112,7 +112,7 @@
     });
 
     function loadData() {
-      console.log("loadData")
+      console.log("loadData");
       $("#table-container").load(/*[[@{/admin/blogs/search}]]*/"/admin/blogs/search", {
         title : $("[name='title']").val(),
         typeId : $("[name='typeId']").val(),

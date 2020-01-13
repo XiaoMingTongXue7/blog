@@ -22,6 +22,20 @@ public interface BlogService {
     Blog getBlogById(Integer id);
 
     /**
+     * 通过博客标题查询博客
+     * @param title 要查询的博客标题
+     * @return 查询到的博客
+     */
+    Blog getBlogByName(String title);
+
+    /**
+     * 通过博客标题查询博客是否存在
+     * @param title 要查询的博客标题
+     * @return true:存在, false:不存在
+     */
+    Boolean checkBlogName(String title);
+
+    /**
      * 通过页码获取博客列表
      * @param pageNum 页码
      * @return 对应页的博客列表
@@ -30,7 +44,7 @@ public interface BlogService {
 
     /**
      * 通过条件获取博客列表
-     * @param blogCond
+     * @param blogCond 想要查询的博客条件
      * @return 对应条件的博客列表
      */
     PageInfo<Blog> listBlogByCond(BlogCond blogCond);

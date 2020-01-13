@@ -71,14 +71,6 @@ public class BlogTagRelationServiceImpl implements BlogTagRelationService {
 
     @Transactional(rollbackFor = SQLException.class)
     @Override
-    public void saveBlogTagById(BlogTagRelation blogTagRelation) {
-        List<BlogTagRelation> blogTagRelations = new ArrayList<>();
-        blogTagRelations.add(blogTagRelation);
-        saveBlogTagByIds(blogTagRelations);
-    }
-
-    @Transactional(rollbackFor = SQLException.class)
-    @Override
     public void deleteBlogTagByBlogId(Integer blogId) {
         if(blogId == null){
             throw new NotFoundException("blogId 为空");

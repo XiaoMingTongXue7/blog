@@ -1,7 +1,7 @@
 package cn.xudam.blog.controller.admin;
 
+import cn.xudam.blog.constant.WebConst;
 import cn.xudam.blog.dto.cond.BlogCond;
-import cn.xudam.blog.exception.NotFoundException;
 import cn.xudam.blog.pojo.Blog;
 import cn.xudam.blog.pojo.Type;
 import cn.xudam.blog.service.BlogService;
@@ -60,11 +60,15 @@ public class TypeController {
 
     @PostMapping("/types")
     public String saveType(@NotNull Type type, RedirectAttributes attributes){
-        if(type.getName()==null){
-            return "redirect:/admin/types";
+        if(type.getName().length()>WebConst.MAX_TYPE_NAME){
+            attributes.addFlashAttribute("message", "添加失败，输入的数据过长");
         }
-        typeService.saveType(type);
-        attributes.addFlashAttribute("message", "添加成功");
+        if(typeService.checkTypeName(type.getName())){
+            attributes.addFlashAttribute("message", "添加失败，您输入的分类已存在");
+        } else {
+            typeService.saveType(type);
+            attributes.addFlashAttribute("message", "添加成功");
+        }
         return "redirect:/admin/types";
     }
 
@@ -91,11 +95,15 @@ public class TypeController {
 
     @PostMapping("/types/update")
     public String updateType(@NotNull Type type, RedirectAttributes attributes){
-        if(type.getId()==null || type.getName()==null){
-            return "redirect:/admin/types";
+        if(type.getId()==null || type.getName().length()>WebConst.MAX_TYPE_NAME){
+            attributes.addFlashAttribute("message", "修改失败，输入的数据过长");
         }
-        typeService.updateType(type);
-        attributes.addFlashAttribute("message", "修改成功");
+        if(typeService.checkTypeName(type.getName())){
+            attributes.addFlashAttribute("message", "修改失败，您输入的分类已存在");
+        } else {
+            typeService.updateType(type);
+            attributes.addFlashAttribute("message", "修改成功");
+        }
         return "redirect:/admin/types";
     }
 

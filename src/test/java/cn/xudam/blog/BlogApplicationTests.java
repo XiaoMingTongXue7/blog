@@ -4,11 +4,10 @@ import cn.xudam.blog.dao.BlogMapper;
 import cn.xudam.blog.dao.TypeMapper;
 import cn.xudam.blog.dto.cond.BlogCond;
 import cn.xudam.blog.pojo.Blog;
+import cn.xudam.blog.pojo.BlogTagRelation;
 import cn.xudam.blog.pojo.Type;
-import cn.xudam.blog.service.BlogService;
-import cn.xudam.blog.service.TagService;
-import cn.xudam.blog.service.TypeService;
-import cn.xudam.blog.service.UserService;
+import cn.xudam.blog.service.*;
+import cn.xudam.blog.util.Commons;
 import com.github.pagehelper.PageInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +37,9 @@ class BlogApplicationTests {
 
     @Autowired
     BlogMapper blogMapper;
+
+    @Autowired
+    BlogTagRelationService blogTagRelationService;
 
     @Test
     void contextLoads() {
@@ -104,5 +106,4 @@ class BlogApplicationTests {
             System.out.println(blog);
         }
     }
-
 }

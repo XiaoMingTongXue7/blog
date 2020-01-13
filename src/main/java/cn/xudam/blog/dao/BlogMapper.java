@@ -25,6 +25,13 @@ public interface BlogMapper {
     Blog getBlogById(Integer id);
 
     /**
+     * 根据博客标题查询博客
+     * @param title 博客的标题
+     * @return 查询到的博客
+     */
+    Blog getBlogByName(String title);
+
+    /**
      * 根据条件查询查询博客
      * 默认为第一页，倒叙
      * @param blogCond 查询博客的条件

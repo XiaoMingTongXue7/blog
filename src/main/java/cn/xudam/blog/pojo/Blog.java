@@ -1,51 +1,112 @@
 package cn.xudam.blog.pojo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 博客实体类
  * @author 鸣
  * 2020/1/4 11:49
  */
 public class Blog {
 
+    /**
+     * 博客主键
+     */
     private Integer id;
-    //标题
+
+    /**
+     * 博客标题
+     */
     private String title;
-    //内容
+
+    /**
+     * 博客内容
+     */
     private String content;
 
+    /**
+     * 博客描述
+     */
     private String description;
 
-    //首图
+    /**
+     * 博客首图链接
+     */
     private String firstPic;
-    //标记
-    private String flag;
-    //浏览次数
+
+    /**
+     * 博客标记
+     * 默认为‘原创’
+     */
+    private String flag = "原创";
+
+    /**
+     * 博客浏览次数
+     * <p>初始为0<p/>
+     */
     private Integer views = 0;
-    //赞赏开启
+
+    /**
+     * 是否推荐<br/>
+     * true为推荐<br/>
+     * false为不推荐
+     */
     private Boolean appreciation = false;
-    //版权开启
+
+    /**
+     * 是否开启版权<br/>
+     * true为开启<br/>
+     * false为不开启
+     */
     private Boolean copyright = false;
-    //评论开启
+
+    /**
+     * 是否开启评论<br/>
+     * true为开启<br/>
+     * false为不开启
+     */
     private Boolean commentAble = false;
-    //是否发布
+
+    /**
+     * 是否发布<br/>
+     * true为发布<br/>
+     * false为草稿
+     */
     private Boolean publish = false;
-    //是否推荐
+
+    /**
+     * 是否开启推荐<br/>
+     * true为开启<br/>
+     * false为不开启
+     */
     private Boolean recommend = false;
-    //创建时间
+
+    /**
+     * 博客的创建时间
+     */
     private LocalDateTime createTime;
 
-    //更新时间
+
+    /**
+     * 博客的更新时间
+     */
     private LocalDateTime updateTime;
 
+    /**
+     * 博客的评论
+     */
     private List<Comment> comments = new ArrayList<>();
 
+    /**
+     * 博客的分类
+     */
     private Type type;
 
+    /**
+     * 博客的标签
+     */
     private List<Tag> tags = new ArrayList<>();
 
     public List<Comment> getComments() {

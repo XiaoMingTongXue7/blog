@@ -44,6 +44,21 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public Tag getTagByName(String name) {
+        return tagMapper.getTagByName(name);
+    }
+
+    @Override
+    public Boolean checkTagName(String name) {
+        Tag tag = getTagByName(name);
+        if(tag==null){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
     public PageInfo<Tag> listTag(Integer id) {
         return listTag(id, true);
     }

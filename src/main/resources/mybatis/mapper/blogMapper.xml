@@ -32,6 +32,12 @@
         from t_blog where id=#{id}
     </select>
 
+    <select id="getBlogByName" parameterType="String" resultType="Blog">
+        select Id, title, content, description, firstpic, flag, views, appreciation, copyright,
+        commentable, publish, recommend, createtime, updatetime, type_id
+        from t_blog where id=#{name}
+    </select>
+
     <select id="listBlogByCond" resultMap="BlogMapper" parameterType="cn.xudam.blog.dto.cond.BlogCond">
         select id, title, content, description, firstpic, flag, views, appreciation,
         copyright, commentable, publish, recommend, createtime, updatetime, type_id

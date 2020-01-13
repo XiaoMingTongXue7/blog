@@ -14,6 +14,12 @@
         where Id=#{id}
     </select>
 
+    <select id="getTagByName" parameterType="String" resultType="Tag">
+        select Id, name
+        from t_tag
+        where name=#{name}
+    </select>
+
     <select id="listTag" resultType="Tag">
         select id, name from t_tag
     </select>

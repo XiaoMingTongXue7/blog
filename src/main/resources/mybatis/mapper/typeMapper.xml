@@ -14,6 +14,11 @@
         where Id=#{id}
     </select>
 
+    <select id="getTypeByName" parameterType="String" resultType="Type">
+        select id, name from t_type
+        where name=#{name}
+    </select>
+
     <select id="listType" resultType="Type">
         select id, name from t_type
     </select>

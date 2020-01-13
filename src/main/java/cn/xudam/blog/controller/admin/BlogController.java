@@ -32,12 +32,6 @@ public class BlogController {
     private TypeService typeService;
     private BlogService blogService;
     private TagService tagService;
-    private BlogTagRelationService blogTagService;
-
-    @Autowired
-    public void setBlogTagService(BlogTagRelationService blogTagRelationService) {
-        this.blogTagService = blogTagRelationService;
-    }
 
     @Autowired
     public void setTagService(TagService tagService) {
@@ -82,8 +76,12 @@ public class BlogController {
 
     @PostMapping("/blog/publish")
     public String saveBlog(Blog blog, String tagIds, RedirectAttributes attributes){
-        blogService.saveBlog(blog, tagIds);
-        attributes.addAttribute("message", "保存成功");
+        if(blogService.checkBlogName(blog.getTitle())){
+            attributes.addAttribute("message", "保存失败，您输入的标题已存在");
+        } else {
+            blogService.saveBlog(blog, tagIds);
+            attributes.addAttribute("message", "保存成功");
+        }
         return "redirect:/admin/blogs";
     }
 

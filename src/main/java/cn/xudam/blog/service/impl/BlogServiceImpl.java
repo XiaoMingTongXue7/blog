@@ -1,5 +1,6 @@
 package cn.xudam.blog.service.impl;
 
+import cn.xudam.blog.constant.WebConst;
 import cn.xudam.blog.dao.BlogMapper;
 import cn.xudam.blog.dto.cond.BlogCond;
 import cn.xudam.blog.exception.NotFoundException;
@@ -49,6 +50,21 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public Blog getBlogByName(String title) {
+        return blogMapper.getBlogByName(title);
+    }
+
+    @Override
+    public Boolean checkBlogName(String title) {
+        Blog blog = getBlogByName(title);
+        if(blog == null){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
     public PageInfo<Blog> listBlog(Integer pageNum) {
         return listBlog(pageNum, true);
     }
@@ -76,7 +92,7 @@ public class BlogServiceImpl implements BlogService {
     @Transactional(rollbackFor = SQLException.class)
     @Override
     public void saveBlog(Blog blog, String tagIds) {
-
+        checkBlog(blog);
         List<Integer> tagId = Commons.stringToList(tagIds);
         Integer integer;
         if(blog.getId() == null){
@@ -91,6 +107,21 @@ public class BlogServiceImpl implements BlogService {
         }
         if(integer != 1){
             throw new NotFoundException("添加博客失败");
+        }
+    }
+
+    private void checkBlog(Blog blog) {
+        if(blog.getTitle()==null || blog.getTitle().length()> WebConst.MAX_BLOG_TITLE){
+            throw new NotFoundException("添加博客失败，博客标题过长");
+        }
+        if(blog.getContent()==null || blog.getTitle().length()> WebConst.MAX_BLOG_CONTENT){
+            throw new NotFoundException("添加博客失败，博客内容过长");
+        }
+        if(blog.getDescription()==null || blog.getTitle().length()> WebConst.MAX_BLOG_DESCRIPTION){
+            throw new NotFoundException("添加博客失败，博客描述过长");
+        }
+        if(blog.getFirstPic()==null || blog.getTitle().length()> WebConst.MAX_BLOG_FIRST_PIC){
+            throw new NotFoundException("添加博客失败，博客首图链接过长");
         }
     }
 

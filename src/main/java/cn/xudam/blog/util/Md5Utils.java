@@ -4,13 +4,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by limi on 2017/10/15.
+ * MD5加密类
+ * @author 鸣
+ * 2020/1/9 11:24
  */
-@SuppressWarnings("AliControlFlowStatementWithoutBraces")
-public class MD5Utils {
+@SuppressWarnings({"ALL", "AlibabaClassNamingShouldBeCamel"})
+public class Md5Utils {
 
     /**
-     * MD5加密类
+     * MD5加密方法
      * @param str 要加密的字符串
      * @return    加密后的字符串
      */

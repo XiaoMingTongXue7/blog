@@ -15,11 +15,15 @@ public interface TypeService {
 
     Type getTypeById(Integer id);
 
-    PageInfo<Type> listType(Integer id);
+    Type getTypeByName(String name);
+
+    Boolean checkTypeName(String name);
+
+    PageInfo<Type> listType(Integer pageNum);
 
     List<Type> listType();
 
-    PageInfo<Type> listType(Integer id, Boolean isDesc);
+    PageInfo<Type> listType(Integer pageNum, Boolean isDesc);
 
     void updateType(Type type);
 
