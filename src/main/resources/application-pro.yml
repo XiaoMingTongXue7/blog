@@ -10,11 +10,14 @@ spring:
   datasource:
     username: xudam
     password: xudam
-    url: jdbc:mysql://118.25.70.78:3306/blog?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://118.25.70.78:3306/blog?serverTimezone=Hongkong&useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
 mybatis:
   type-aliases-package: cn.xudam.blog.pojo
   mapper-locations: classpath:mybatis/mapper/*.xml
+
+comment:
+  avatar: /images/avatar.png
 
 logging:
   level:

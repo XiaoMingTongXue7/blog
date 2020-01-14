@@ -14,7 +14,7 @@ public class WebConst {
     /**
      * 博客标题的最大长度
      */
-    public static final Integer MAX_BLOG_TITLE = 20;
+    public static final Integer MAX_BLOG_TITLE = 15;
 
     /**
      * 博客内容的最大长度
@@ -40,6 +40,21 @@ public class WebConst {
      * 博客标签名称的最大长度
      */
     public static final Integer MAX_TAG_NAME = 20;
+
+    /**
+     * 博客评论昵称的最大长度
+     */
+    public static final Integer MAX_COMMENT_NICKNAME = 10;
+
+    /**
+     * 博客评论邮箱的最大长度
+     */
+    public static final Integer MAX_COMMENT_EMAIL = 25;
+
+    /**
+     * 博客评论内容的最大长度
+     */
+    public static final Integer MAX_COMMENT_CONTENT = 100;
 
 
 }

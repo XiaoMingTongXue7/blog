@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xudam.blog.dao.CommentMapper">
+
+    <select id="getCommentById" resultType="Comment" parameterType="Integer">
+        select id, nickname, email, content, createtime, blog_id, parentcomment_id
+        from t_comment where Id=#{id}
+    </select>
+
+    <select id="listCommentByBlogId" resultType="Comment" parameterType="Integer">
+        select id, nickname, email, content, createtime, blog_id, parentcomment_id
+        from t_comment where blog_id=#{blogId}
+        order by createTime desc
+    </select>
+
+    <insert id="saveComment" parameterType="Comment">
+        insert into t_comment(nickName, email, content, createTime, blog_id, parentComment_id)
+        values (
+            #{nickName, jdbcType=VARCHAR},
+            #{email, jdbcType=VARCHAR},
+            #{content, jdbcType=VARCHAR},
+            #{createTime, jdbcType=TIMESTAMP},
+            #{blog.id, jdbcType=INTEGER},
+            #{parentComment.id, jdbcType=INTEGER}
+        )
+    </insert>
+</mapper>

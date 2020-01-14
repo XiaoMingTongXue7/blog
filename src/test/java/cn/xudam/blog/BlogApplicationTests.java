@@ -3,10 +3,7 @@ package cn.xudam.blog;
 import cn.xudam.blog.dao.BlogMapper;
 import cn.xudam.blog.dao.TypeMapper;
 import cn.xudam.blog.dto.cond.BlogCond;
-import cn.xudam.blog.pojo.Blog;
-import cn.xudam.blog.pojo.BlogTagRelation;
-import cn.xudam.blog.pojo.Tag;
-import cn.xudam.blog.pojo.Type;
+import cn.xudam.blog.pojo.*;
 import cn.xudam.blog.service.*;
 import cn.xudam.blog.util.Commons;
 import cn.xudam.blog.util.MarkdownUtils;
@@ -42,6 +39,9 @@ class BlogApplicationTests {
 
     @Autowired
     BlogTagRelationService blogTagRelationService;
+
+    @Autowired
+    CommentService commentService;
 
     @Test
     void contextLoads() {
@@ -114,8 +114,14 @@ class BlogApplicationTests {
 
     @Test
     void contextLoads7() {
-        Blog blog = blogService.getBlogById(29);
-        String s = MarkdownUtils.markdownToHtml(blog.getContent());
-        System.out.println(s);
+        Comment comment = new Comment();
+        Blog blog = new Blog();
+        blog.setId(29);
+        comment.setBlog(blog);
+        comment.setContent("呵呵");
+        comment.setCreateTime(LocalDateTime.now());
+        comment.setEmail("4848@qq.dwa");
+        comment.setNickName("哈哈");
+        commentService.saveComment(comment);
     }
 }
