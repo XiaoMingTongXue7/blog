@@ -30,8 +30,20 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> listCommentByBlogId(Integer blogId) {
-        return commentMapper.listCommentByBlogId(blogId);
+    public List<Comment> listParentCommentByBlogId(Integer blogId) {
+        List<Comment> comments = commentMapper.listParentCommentByBlogId(blogId);
+        getReplyComments(comments);
+        return eachComment(comments);
+    }
+
+    private void getReplyComments(List<Comment> comments) {
+        for (Comment comment : comments) {
+            List<Comment> comments1 = commentMapper.listCommentByParentId(comment.getId());
+            if(comments1.size()>0){
+                comment.setReplyComments(comments1);
+                getReplyComments(comments1);
+            }
+        }
     }
 
     @Transactional(rollbackFor = SQLException.class)
@@ -69,6 +81,8 @@ public class CommentServiceImpl implements CommentService {
         //合并评论的各层子代到第一级子代集合中
         combineChildren(commentsView);
         return commentsView;
+
+
     }
 
     /**
@@ -77,13 +91,15 @@ public class CommentServiceImpl implements CommentService {
      * @return
      */
     private void combineChildren(List<Comment> comments) {
-
         for (Comment comment : comments) {
             List<Comment> replys1 = comment.getReplyComments();
-            for(Comment reply1 : replys1) {
-                //循环迭代，找出子代，存放在tempReplys中
-                recursively(reply1);
+            if(replys1.size()>0){
+                for(Comment reply1 : replys1) {
+                    //循环迭代，找出子代，存放在tempReplys中
+                    recursively(reply1);
+                }
             }
+
             //修改顶级节点的reply集合为迭代处理后的集合
             comment.setReplyComments(tempReplys);
             //清除临时存放区

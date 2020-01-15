@@ -40,6 +40,7 @@ public class BlogServiceImpl implements BlogService {
         this.blogTagService = blogTagRelationService;
     }
 
+    @Transactional(rollbackFor = SQLException.class)
     @Override
     public Blog getBlogById(Integer id) {
         if (id == null){
@@ -47,6 +48,7 @@ public class BlogServiceImpl implements BlogService {
         }
         Blog blog = blogMapper.getBlogById(id);
         blog.setTags(blogTagService.getTagsByBlogId(blog.getId()));
+        blogMapper.updateBlogViewsByBlogId(id);
         return blog;
     }
 

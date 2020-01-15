@@ -16,7 +16,9 @@ public interface CommentMapper {
 
     Comment getCommentById(Integer id);
 
-    List<Comment> listCommentByBlogId(Integer blogId);
+    List<Comment> listParentCommentByBlogId(Integer blogId);
+
+    List<Comment> listCommentByParentId(Integer parentId);
 
     Integer saveComment(Comment comment);
 

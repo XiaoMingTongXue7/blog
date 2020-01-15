@@ -92,6 +92,10 @@
         where Id=#{id}
     </update>
 
+    <update id="updateBlogViewsByBlogId" parameterType="Integer">
+        update t_blog set views = views+1 where Id=#{id}
+    </update>
+
     <delete id="deleteBlogById" parameterType="Integer">
         delete from t_blog where Id=#{id}
     </delete>

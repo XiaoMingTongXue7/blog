@@ -114,14 +114,10 @@ class BlogApplicationTests {
 
     @Test
     void contextLoads7() {
-        Comment comment = new Comment();
-        Blog blog = new Blog();
-        blog.setId(29);
-        comment.setBlog(blog);
-        comment.setContent("呵呵");
-        comment.setCreateTime(LocalDateTime.now());
-        comment.setEmail("4848@qq.dwa");
-        comment.setNickName("哈哈");
-        commentService.saveComment(comment);
+        List<Comment> comments = commentService.listParentCommentByBlogId(33);
+        for (Comment comment : comments) {
+            List<Comment> replyComments = comment.getReplyComments();
+            System.out.println(replyComments);
+        }
     }
 }

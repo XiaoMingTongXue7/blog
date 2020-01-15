@@ -1,5 +1,6 @@
 package cn.xudam.blog.controller;
 
+import cn.xudam.blog.constant.WebConst;
 import cn.xudam.blog.pojo.Comment;
 import cn.xudam.blog.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.SortedSet;
+import javax.servlet.http.HttpSession;
+
 
 /**
  * @author 鸣
@@ -31,14 +33,16 @@ public class CommentController {
 
     @GetMapping("/comments/{blogId}")
     public String comments(@PathVariable("blogId")Integer blogId, Model model){
-        model.addAttribute("comments", commentService.listCommentByBlogId(blogId));
+        model.addAttribute("comments", commentService.listParentCommentByBlogId(blogId));
         return "blog :: commentList";
     }
 
     @PostMapping("/comments")
-    public String saveComment(Comment comment){
+    public String saveComment(Comment comment, HttpSession session){
+        if(session.getAttribute(WebConst.LOGIN_SESSION_KEY) != null){
+            comment.setAdmin(true);
+        }
         commentService.saveComment(comment);
-        System.out.println(avatar);
-        return "redirect:/comments/" + comment.getBlog().getId();
+        return "redirect:/comments/" + comment.getBlogId();
     }
 }

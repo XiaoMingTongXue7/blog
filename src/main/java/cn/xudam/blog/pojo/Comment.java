@@ -15,35 +15,10 @@ public class Comment {
     private String email;
     private String content;
     private LocalDateTime createTime;
-    private Blog blog;
-
+    private Integer blogId;
+    private Boolean isAdmin;
     private List<Comment> replyComments = new ArrayList<>();
     private Comment parentComment;
-
-
-    public List<Comment> getReplyComments() {
-        return replyComments;
-    }
-
-    public void setReplyComments(List<Comment> replyComments) {
-        this.replyComments = replyComments;
-    }
-
-    public Comment getParentComment() {
-        return parentComment;
-    }
-
-    public void setParentComment(Comment parentComment) {
-        this.parentComment = parentComment;
-    }
-
-    public Blog getBlog() {
-        return blog;
-    }
-
-    public void setBlog(Blog blog) {
-        this.blog = blog;
-    }
 
     @Override
     public String toString() {
@@ -53,6 +28,10 @@ public class Comment {
                 ", email='" + email + '\'' +
                 ", content='" + content + '\'' +
                 ", createTime=" + createTime +
+                ", blogId=" + blogId +
+                ", isAdmin=" + isAdmin +
+                ", replyComments=" + replyComments +
+                ", parentComment=" + parentComment +
                 '}';
     }
 
@@ -88,13 +67,44 @@ public class Comment {
         this.content = content;
     }
 
-
     public LocalDateTime getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getBlogId() {
+        return blogId;
+    }
+
+    public void setBlogId(Integer blogId) {
+        this.blogId = blogId;
+    }
+
+    public Boolean getAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean admin) {
+        isAdmin = admin;
+    }
+
+    public List<Comment> getReplyComments() {
+        return replyComments;
+    }
+
+    public void setReplyComments(List<Comment> replyComments) {
+        this.replyComments = replyComments;
+    }
+
+    public Comment getParentComment() {
+        return parentComment;
+    }
+
+    public void setParentComment(Comment parentComment) {
+        this.parentComment = parentComment;
     }
 
     public Comment() {

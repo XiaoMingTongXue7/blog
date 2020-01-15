@@ -59,6 +59,13 @@ public interface BlogMapper {
      */
     Integer updateBlog(Blog blog);
 
+
+    /**
+     * 浏览次数+1
+     * @param blogId 要增加浏览次数的博客
+     */
+    void updateBlogViewsByBlogId(Integer blogId);
+
     /**
      * 根据Id删除博客
      * @param id
