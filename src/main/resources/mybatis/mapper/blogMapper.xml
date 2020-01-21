@@ -3,6 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.xudam.blog.dao.BlogMapper">
+    <sql id="BASE_COLUMN">
+        id, title, content, description, firstpic, flag, views, appreciation, copyright,
+        commentable, publish, recommend, createtime, updatetime, type_id
+    </sql>
 
     <select id="getTypeById" parameterType="Integer" resultType="Type">
         select Id, name from t_type
@@ -26,21 +30,30 @@
         <association property="type" javaType="Type" select="getTypeById" column="type_id"/>
     </resultMap>
 
+    <select id="listBlogByBlogIds" parameterType="List" resultMap="BlogMapper">
+        select <include refid="BASE_COLUMN"/>
+        from t_blog
+        where Id in
+        <foreach collection="list" item="list" open="(" close=")" separator=",">
+            #{list.blogId}
+        </foreach>
+    </select>
+
     <select id="getBlogById" parameterType="Integer" resultMap="BlogMapper">
-        select Id, title, content, description, firstpic, flag, views, appreciation, copyright,
-        commentable, publish, recommend, createtime, updatetime, type_id
+        select
+        <include refid="BASE_COLUMN"/>
         from t_blog where id=#{id}
     </select>
 
     <select id="getBlogByName" parameterType="String" resultType="Blog">
-        select Id, title, content, description, firstpic, flag, views, appreciation, copyright,
-        commentable, publish, recommend, createtime, updatetime, type_id
+        select
+        <include refid="BASE_COLUMN"/>
         from t_blog where id=#{name}
     </select>
 
     <select id="listBlogByCond" resultMap="BlogMapper" parameterType="cn.xudam.blog.dto.cond.BlogCond">
-        select id, title, content, description, firstpic, flag, views, appreciation,
-        copyright, commentable, publish, recommend, createtime, updatetime, type_id
+        select
+        <include refid="BASE_COLUMN"/>
         from t_blog
         <where>
             <if test="title != null and description == null">
@@ -60,8 +73,8 @@
     </select>
 
     <select id="listBlog" resultMap="BlogMapper">
-        select id, title, content, description, firstpic, flag, views, appreciation,
-        copyright, commentable, publish, recommend, createtime, updatetime, type_id
+        select
+        <include refid="BASE_COLUMN"/>
         from t_blog
     </select>
 
@@ -100,4 +113,19 @@
         delete from t_blog where Id=#{id}
     </delete>
 
+    <select id="findGroupYear" resultType="String">
+        select date_format(createTime, '%Y') as year from t_blog group by year order by year desc
+    </select>
+
+    <select id="listBlogByYear" resultType="Blog" parameterType="Integer">
+        select
+        <include refid="BASE_COLUMN"/>
+        from t_blog
+        where date_format(createTime, '%Y') = #{year}
+    </select>
+
+    <select id="countBlog" resultType="Integer">
+        select count(*)
+        from t_blog
+    </select>
 </mapper>

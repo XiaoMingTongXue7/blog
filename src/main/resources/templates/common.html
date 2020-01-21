@@ -21,11 +21,11 @@
     <div class="ui container">
         <div class="ui inverted secondary stackable menu">
             <h2 class="ui teal header item">Blog</h2>
-            <a href="#" th:classappend="${active=='index'?'active':''}" class="m-item item m-mobile-hide"><i class="mini home icon"></i>首页</a>
-            <a href="#" th:classappend="${active=='types'?'active':''}" class="m-item item m-mobile-hide"><i class="mini idea icon"></i>分类</a>
-            <a href="#" th:classappend="${active=='tags'?'active':''}" class="m-item item m-mobile-hide"><i class="mini tags icon"></i>标签</a>
-            <a href="#" th:classappend="${active=='archives'?'active':''}" class="m-item item m-mobile-hide"><i class="mini clone icon"></i>归档</a>
-            <a href="#" th:classappend="${active=='about'?'active':''}" class="m-item item m-mobile-hide"><i class="mini info icon"></i>关于我</a>
+            <a th:href="@{/}" th:classappend="${active=='index'?'active':''}" class="m-item item m-mobile-hide"><i class="mini home icon"></i>首页</a>
+            <a th:href="@{/type/-1}" th:classappend="${active=='types'?'active':''}" class="m-item item m-mobile-hide"><i class="mini idea icon"></i>分类</a>
+            <a th:href="@{/tag/-1}" th:classappend="${active=='tags'?'active':''}" class="m-item item m-mobile-hide"><i class="mini tags icon"></i>标签</a>
+            <a th:href="@{/archives}" th:classappend="${active=='archives'?'active':''}" class="m-item item m-mobile-hide"><i class="mini clone icon"></i>归档</a>
+            <a th:href="@{/type/-1}" th:classappend="${active=='about'?'active':''}" class="m-item item m-mobile-hide"><i class="mini info icon"></i>关于我</a>
             <div class="right m-item item m-mobile-hide">
                 <form name="search" th:action="@{/search}" method="post" target="_blank">
                     <div class="ui icon inverted transparent input m-margin-tb-tiny">
@@ -40,6 +40,38 @@
         <i class="sidebar icon"></i>
     </a>
 </nav>
+<!--博客列表-->
+<div th:fragment="myBlogList" class="ui padded vertical segment m-padded-tb-large" th:each="blog : ${page.getList()}">
+    <!--/*@thymesVar id="blog" type="cn.xudam.blog.pojo.Blog"*/-->
+    <div class="ui mobile aligned reversed stackable grid" >
+        <div class="eleven wide column">
+            <h3 class="ui header"><a class="m-black" th:text="${blog.title}" target="_blank" th:href="@{/blog/{id}(id=${blog.id})}">你真的理解什么是财富自由吗？</a></h3>
+            <p class="m-text" th:text="|${blog.description}...|">正确做好任何一件事情的前提是清晰、正确的理解目标。而事实是，我们很多人很多时候根本没有对目标正确的定义，甚至根本从来就没有想过，只是大家都那么做而已…...</p>
+            <div class="ui grid">
+                <div class="eleven wide column">
+                    <div class="ui mini horizontal link list">
+                        <div class="item">
+                            <i class="calendar icon"></i>
+                            <span th:text="${#strings.replace(blog.getUpdateTime(),'T',' ')}">2017-10-01</span>
+                        </div>
+                        <div class="item">
+                            <i class="eye icon"></i>
+                            <span th:text="${blog.views}">2342</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="right aligned five wide column">
+                    <a href="#" target="_blank" class="ui teal basic label m-padded-tiny m-text-thin" th:text="${blog.type.name}">认知升级</a>
+                </div>
+            </div>
+        </div>
+        <div class="five wide column">
+            <a href="#" target="_blank">
+                <img th:src="@{${blog.firstPic}}" alt="" class="ui rounded image">
+            </a>
+        </div>
+    </div>
+</div>
 
 <!--分页-->
 <div th:fragment="mypage" class="ui bottom attached segment" th:if="${page.hasPreviousPage || page.hasNextPage}">

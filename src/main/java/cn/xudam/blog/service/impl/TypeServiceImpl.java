@@ -71,10 +71,21 @@ public class TypeServiceImpl implements TypeService {
 
     @Override
     public List<Type> listTypeTop() {
+        return listTypeTop(1000);
+    }
+
+    @Override
+    public List<Type> listTypeTop(Integer size) {
         List<Type> types = listType();
+        int temp = 0;
         for (Type type : types) {
-            List<Blog> blogs = blogService.listBlogByType(type);
-            type.setBlogs(blogs);
+            if(temp < size){
+                temp += 1;
+                List<Blog> blogs = blogService.listBlogByType(type);
+                type.setBlogs(blogs);
+            } else {
+                types.remove(type);
+            }
         }
         Collections.sort(types, Comparator.comparing(
                 Type::getBlogs, (s, t) -> t.size()-s.size()

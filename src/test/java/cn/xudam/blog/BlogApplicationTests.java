@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 class BlogApplicationTests {
@@ -94,6 +95,7 @@ class BlogApplicationTests {
         System.out.println(pageInfo);
         List<Blog> list = pageInfo.getList();
         for (Blog blog : list) {
+            System.out.println(blog.getCreateTime().getMonthValue());
             System.out.println(blog);
         }
     }
@@ -107,17 +109,27 @@ class BlogApplicationTests {
     }
 
     @Test
+    void contextLoads15() {
+        List<Type> types = typeService.listTypeTop();
+        types.forEach(System.out::println);
+    }
+
+    @Test
     void contextLoads6() {
-        PageInfo<Blog> blogPageInfo = blogService.listBlog(1);
-        System.out.println(blogPageInfo);
+        BlogTagRelation blogTagRelation = new BlogTagRelation();
+        blogTagRelation.setTagId(9);
+        List<BlogTagRelation> blogIds = blogTagRelationService.getBlogTagsByBlogTagId(blogTagRelation);
+        List<Blog> blogs = blogMapper.listBlogByBlogIds(blogIds);
+        blogs.forEach(System.out::println);
     }
 
     @Test
     void contextLoads7() {
-        List<Comment> comments = commentService.listParentCommentByBlogId(33);
-        for (Comment comment : comments) {
-            List<Comment> replyComments = comment.getReplyComments();
-            System.out.println(replyComments);
-        }
+        Map<String, List<Blog>> map = blogService.archiveBlog();
+        System.out.println(map);
+        Integer integer = blogService.countBlog();
+        System.out.println(integer);
     }
+
+
 }

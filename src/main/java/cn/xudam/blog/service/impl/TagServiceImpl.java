@@ -89,11 +89,15 @@ public class TagServiceImpl implements TagService {
         List<Tag> tags = listTag();
         for (Tag tag : tags) {
             List<Blog> blogs = blogTagService.getBlogsByTagId(tag.getId());
-            tag.setBlogs(blogs);
+            if(blogs != null){
+                tag.setBlogs(blogs);
+            } else {
+                tag.setBlogs(new ArrayList<Blog>());
+            }
         }
 
-        Collections.sort(tags, Comparator.comparing(
-                Tag::getBlogs, (s, t) -> t.size()-s.size()
+        tags.sort(Comparator.comparing(
+                Tag::getBlogs, (s, t) -> t.size() - s.size()
         ));
         return tags;
     }

@@ -25,6 +25,8 @@ public interface TypeService {
 
     List<Type> listTypeTop();
 
+    List<Type> listTypeTop(Integer size);
+
     PageInfo<Type> listType(Integer pageNum, Boolean isDesc);
 
     void updateType(Type type);

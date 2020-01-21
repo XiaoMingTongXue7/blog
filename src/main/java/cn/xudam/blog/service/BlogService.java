@@ -7,6 +7,7 @@ import cn.xudam.blog.pojo.Type;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 博客服务层
@@ -35,6 +36,18 @@ public interface BlogService {
      * @return true:存在, false:不存在
      */
     Boolean checkBlogName(String title);
+
+    /**
+     * 获取当前所有的归档信息
+     * @return Map类型 其中key为年份，value为当前年份的所有博客，按创建时间倒叙
+     */
+    Map<String, List<Blog>> archiveBlog();
+
+    /**
+     * 获取当前的博客总数
+     * @return 博客总数，Integer类型
+     */
+    Integer countBlog();
 
     /**
      * 通过页码获取博客列表

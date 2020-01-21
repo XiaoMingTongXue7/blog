@@ -2,8 +2,10 @@ package cn.xudam.blog.dao;
 
 import cn.xudam.blog.dto.cond.BlogCond;
 import cn.xudam.blog.pojo.Blog;
+import cn.xudam.blog.pojo.BlogTagRelation;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -40,6 +42,13 @@ public interface BlogMapper {
     List<Blog> listBlogByCond(BlogCond blogCond);
 
     /**
+     * 通过博客的Id集合获取响应的博客列表
+     * @param blogIds 博客Id集合
+     * @return
+     */
+    List<Blog> listBlogByBlogIds(List<BlogTagRelation> blogIds);
+
+    /**
      * 查询所有博客
      * @return List<Blog>查询到的博客
      */
@@ -68,9 +77,27 @@ public interface BlogMapper {
 
     /**
      * 根据Id删除博客
-     * @param id
+     * @param id 博客的id
+     * @return 影响数据库的条数
+     */
+    Integer deleteBlogById(@Param("id") Integer id);
+
+    /**
+     * 根据创建时间生成博客的创建年份列表
      * @return
      */
-    Integer deleteBlogById(Integer id);
+    List<String> findGroupYear();
 
+    /**
+     * 根据博客的创建年份查询博客信息
+     * @param year
+     * @return
+     */
+    List<Blog> listBlogByYear(Integer year);
+
+    /**
+     * 获取当前的博客总数
+     * @return 博客总数，Integer类型
+     */
+    Integer countBlog();
 }

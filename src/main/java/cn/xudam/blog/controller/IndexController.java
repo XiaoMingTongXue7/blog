@@ -47,7 +47,7 @@ public class IndexController {
     @GetMapping({"/", "/index"})
     public String index(Model model){
         model.addAttribute("page", blogService.listBlog(1));
-        model.addAttribute("types", typeService.listTypeTop());
+        model.addAttribute("types", typeService.listTypeTop(5));
         model.addAttribute("tags", tagService.listTagTop());
         BlogCond blogCond = new BlogCond();
         blogCond.setRecommend(true);
@@ -57,14 +57,15 @@ public class IndexController {
 
     @PostMapping("/search")
     public String search(String query, Model model){
-        if(StringUtil.isNotEmpty(query)){
-            BlogCond blogCond = new BlogCond();
-            blogCond.setTitle(query);
-            blogCond.setDescription(query);
-            PageInfo<Blog> pageInfo = blogService.listBlogByCond(blogCond);
-            model.addAttribute("page", pageInfo);
-            model.addAttribute("query", query);
+        if(StringUtil.isEmpty(query)){
+            query = "";
         }
+        BlogCond blogCond = new BlogCond();
+        blogCond.setTitle(query);
+        blogCond.setDescription(query);
+        PageInfo<Blog> pageInfo = blogService.listBlogByCond(blogCond);
+        model.addAttribute("page", pageInfo);
+        model.addAttribute("query", query);
         return "search";
     }
 

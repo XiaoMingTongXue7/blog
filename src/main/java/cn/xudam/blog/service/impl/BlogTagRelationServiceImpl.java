@@ -8,6 +8,8 @@ import cn.xudam.blog.pojo.Blog;
 import cn.xudam.blog.pojo.BlogTagRelation;
 import cn.xudam.blog.pojo.Tag;
 import cn.xudam.blog.service.BlogTagRelationService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -110,15 +112,27 @@ public class BlogTagRelationServiceImpl implements BlogTagRelationService {
         if(tagId == null){
             throw new NotFoundException("tagId 为空");
         }
+        Tag tagById = tagMapper.getTagById(tagId);
         BlogTagRelation blogTagRelation = new BlogTagRelation();
         blogTagRelation.setTagId(tagId);
         List<BlogTagRelation> blogIds = getBlogTagsByBlogTagId(blogTagRelation);
-        List<Blog> blogs = new ArrayList<>();
-        for (BlogTagRelation id : blogIds) {
-            blogs.add(blogMapper.getBlogById(id.getBlogId()));
+        if(tagById != null && blogIds.size() > 0){
+            return blogMapper.listBlogByBlogIds(blogIds);
+        } else {
+            return null;
         }
-        return blogs;
     }
+
+    @Override
+    public PageInfo<Blog> listBlogsByTagId(Integer pageNum, Integer tagId) {
+        BlogTagRelation blogTagRelation = new BlogTagRelation();
+        blogTagRelation.setTagId(tagId);
+        List<BlogTagRelation> blogIds = getBlogTagsByBlogTagId(blogTagRelation);
+        return PageHelper.startPage(pageNum, 5, "updateTime desc").doSelectPageInfo(
+                () -> blogMapper.listBlogByBlogIds(blogIds)
+        );
+    }
+
 
     @Transactional(rollbackFor = SQLException.class)
     @Override

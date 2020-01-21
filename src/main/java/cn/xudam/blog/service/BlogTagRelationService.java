@@ -4,6 +4,7 @@ import cn.xudam.blog.exception.NotFoundException;
 import cn.xudam.blog.pojo.Blog;
 import cn.xudam.blog.pojo.BlogTagRelation;
 import cn.xudam.blog.pojo.Tag;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -62,6 +63,14 @@ public interface BlogTagRelationService {
      * @return
      */
     List<Blog> getBlogsByTagId(Integer tagId);
+
+    /**
+     * 根据页码和标签Id获取博客分页数据
+     * @param pageNum 页码
+     * @param tagId 标签Id
+     * @return
+     */
+    PageInfo<Blog> listBlogsByTagId(Integer pageNum, Integer tagId);
 
     /**
      * 更新博客的标签<br>

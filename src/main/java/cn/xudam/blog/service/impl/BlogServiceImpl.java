@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 鸣
@@ -60,11 +62,22 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public Boolean checkBlogName(String title) {
         Blog blog = getBlogByName(title);
-        if(blog == null){
-            return false;
-        } else {
-            return true;
+        return blog != null;
+    }
+
+    @Override
+    public Map<String, List<Blog>> archiveBlog() {
+        List<String> years = blogMapper.findGroupYear();
+        Map<String, List<Blog>> map = new LinkedHashMap<>(years.size());
+        for (String year : years) {
+            map.put(year, blogMapper.listBlogByYear(Integer.parseInt(year)));
         }
+        return map;
+    }
+
+    @Override
+    public Integer countBlog() {
+        return blogMapper.countBlog();
     }
 
     @Override
