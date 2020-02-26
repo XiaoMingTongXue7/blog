@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common::header(title='搜索结果')"></head>
+<body>
+<div id="box">
+  <!--导航-->
+  <div th:replace="common::mynav(active='tags')"></div>
+    <!--中间内容-->
+    <div  class="m-container-small m-padded-tb-big">
+      <div class="ui container">
+        <!--header-->
+        <div class="ui top attached segment">
+          <div class="ui middle aligned two column grid">
+            <div class="column">
+              <h3 class="ui teal header">搜索结果</h3>
+            </div>
+            <div class="right aligned column">
+              共 <h2 class="ui orange header m-inline-block m-text-thin" th:text="${page.getTotal()}"> 14 </h2> 个
+            </div>
+          </div>
+        </div>
+        <div class="ui top attached teal segment">
+          <!--博客列表-->
+          <div th:replace="common :: myBlogList"></div>
+        </div>
+        <!--分页-->
+        <div th:replace="common::mypage"></div>
+      </div>
+    </div>
+  <!--底部footer-->
+  <div th:replace="common::myfooter"></div>
+</div>
+  <script>
+    $('.menu.toggle').click(function () {
+      $('.m-item').toggleClass('m-mobile-hide');
+    });
+  </script>
+</body>
+</html>

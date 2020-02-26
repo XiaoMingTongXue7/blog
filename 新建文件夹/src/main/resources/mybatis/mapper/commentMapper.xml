@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.xudam.blog.dao.CommentMapper">
+
+    <select id="getCommentById" resultMap="CommentMapper" parameterType="Integer">
+        select id, nickname, email, content, createtime, blog_id as blogId, parentcomment_id as parentCommentId, isAdmin
+        from t_comment where Id=#{id}
+    </select>
+
+    <select id="listParentCommentByBlogId" resultMap="CommentMapper" parameterType="Integer">
+        select id, nickname, email, content, createtime, blog_id as blogId, parentcomment_id as parentCommentId, isAdmin
+        from t_comment where blog_id=#{blogId} and parentComment_id is null
+        order by createTime asc
+    </select>
+
+    <resultMap id="CommentMapper" type="Comment">
+        <id property="id" column="Id"/>
+        <result column="nickname" property="nickName"/>
+        <result column="email" property="email"/>
+        <result column="content" property="content"/>
+        <result column="createtime" property="createTime"/>
+        <result column="blogId" property="blogId"/>
+        <result column="isAdmin" property="isAdmin"/>
+        <association property="parentComment" javaType="Comment" column="parentCommentId" select="getCommentById"/>
+    </resultMap>
+
+    <select id="listCommentByParentId" resultMap="CommentMapper" parameterType="Integer">
+        select id, nickname, email, content, createtime, blog_id as blogId, parentcomment_id as parentCommentId, isAdmin
+        from t_comment where parentComment_id=#{parentId}
+        order by createTime asc
+    </select>
+
+    <insert id="saveComment" parameterType="Comment">
+        insert into t_comment(nickName, email, content, createTime, blog_id, parentComment_id, isAdmin)
+        values (
+            #{nickName, jdbcType=VARCHAR},
+            #{email, jdbcType=VARCHAR},
+            #{content, jdbcType=VARCHAR},
+            #{createTime, jdbcType=TIMESTAMP},
+            #{blogId, jdbcType=INTEGER},
+            #{parentComment.id, jdbcType=INTEGER},
+            #{isAdmin, jdbcType=INTEGER}
+        )
+    </insert>
+</mapper>
